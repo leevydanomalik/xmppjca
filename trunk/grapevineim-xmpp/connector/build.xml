@@ -3,7 +3,7 @@
 	<import file="../dependencies.xml" />
 	
 	<description>
-        XmppMessaging JCA COnnector for GrapevineIM.com
+        XmppMessaging JCA Connector for GrapevineIM.com
     </description>
 
 	<property name="src" location="./src/main/java" />
