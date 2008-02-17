@@ -1,0 +1,35 @@
+<project name="grapevineim-xmpp-app" default="app" basedir=".">
+	<description>
+        XmppMessaging App for GrapevineIM.com
+    </description>
+
+	<import file="../dependencies.xml" />
+
+	<property name="src" location="./src/main/java" />
+	<property name="src.resources" location="./src/main/resources" />
+	<property name="build" location="./target/classes" />
+	<property name="dist" location="./target" />
+
+	<target name="init">
+		<mkdir dir="${build}" />
+	</target>
+	
+	<target name="app">
+		<mkdir dir="${dist}"/>		
+		<ear destfile="${dist}/${ant.project.name}-${project.version}.ear" appxml="${src.resources}/application.xml">
+			<fileset dir="${project.home}/api/target/">
+				<include name="grapevineim-xmpp-api-${project.version}.jar" />
+			</fileset>
+			<fileset dir="${project.home}/inbound/target/">
+				<include name="grapevineim-xmpp-inbound-mdb-${project.version}.jar" />
+			</fileset>
+			<fileset dir="${project.home}/lib/">
+				<include name="smack.jar" />
+				<include name="smackx.jar" />
+				<include name="commons-lang-2.3.jar" />
+				<include name="commons-logging-1.1.1.jar" />
+			</fileset>
+		</ear>
+	</target>
+
+</project>
