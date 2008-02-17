@@ -20,7 +20,7 @@
 <project name="XmppMessaging-Build-Dependencies" basedir=".">
 	
 	<!-- TODO fix this -->
-	<property file="C:\\eclipse\\workspace\\XmppMessaging\\project.properties"/>
+	<property file="C:\\eclipse\\workspace\\grapevineim-xmpp\\project.properties"/>
 	
 	<path id="javax.resource.classpath">
 		<pathelement path="${j2ee.home}/lib/javaee.jar" />
