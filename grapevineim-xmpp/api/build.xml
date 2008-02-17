@@ -1,0 +1,33 @@
+<project name="grapevineim-xmpp-api" default="dist" basedir=".">
+	
+	<import file="../dependencies.xml" />
+	
+	<description>
+        XmppMessaging API for GrapevineIM.com
+    </description>
+
+	<property name="src" location="./src/main/java" />
+	<property name="build" location="./target/classes" />
+	<property name="dist" location="./target" />
+
+	<target name="init">
+		<mkdir dir="${build}" />
+	</target>
+
+	<target name="compile" depends="init" description="compile the source ">
+		<javac srcdir="${src}" destdir="${build}" debug="true">
+			<classpath path="${j2ee.home}/lib/javaee.jar"/>	
+		</javac>
+	</target>
+
+	<target name="dist" depends="compile" description="generate the distribution">
+		<mkdir dir="${dist}" />
+		<jar jarfile="${dist}/${ant.project.name}-${project.version}.jar" basedir="${build}" />
+	</target>
+
+	<target name="clean" description="clean up">
+		<delete dir="${build}" />
+		<delete dir="${dist}" />
+	</target>
+</project>
+
