@@ -1,0 +1,61 @@
+<project name="grapevineim-xmpp-connector" default="dist" basedir=".">
+	
+	<import file="../dependencies.xml" />
+	
+	<description>
+        XmppMessaging JCA COnnector for GrapevineIM.com
+    </description>
+
+	<property name="src" location="./src/main/java" />
+	<property name="resources" location="./src/main/resources" />
+	<property name="build" location="./target/classes" />
+	<property name="dist" location="./target" />
+
+	<target name="init">
+		<mkdir dir="${build}" />
+	</target>
+
+	<target name="compile" depends="init" description="compile the source">
+		<javac srcdir="${src}" destdir="${build}" debug="true">
+			<classpath path="${j2ee.home}/lib/javaee.jar"/>			
+			<classpath path="${project.home}/lib/smack.jar"/>			
+			<classpath path="${project.home}/lib/smackx.jar"/>			
+			<classpath path="${project.home}/lib/commons-lang-2.3.jar"/>			
+			<classpath path="${project.home}/lib/commons-logging-1.1.1.jar"/>
+			<classpath path="${project.home}/api/target/grapevineim-xmpp-api-${project.version}.jar"/>			
+		</javac>
+	</target>
+
+	<target name="jar" depends="compile">
+		<mkdir dir="${dist}" />
+		<jar jarfile="${dist}/${ant.project.name}-${project.version}.jar" basedir="${build}"/>			
+	</target>
+		
+	<target name="rar" depends="jar">
+		<jar jarfile="${dist}/${ant.project.name}-${project.version}.rar">
+			<fileset dir="${dist}">
+				<include name="${ant.project.name}-${project.version}.jar"/>							
+			</fileset>
+			<fileset dir="${project.home}/api/target/">
+				<include name="grapevineim-xmpp-api-${project.version}.jar"/>							
+			</fileset>
+			<fileset dir="${project.home}/lib/">
+				<include name="smack.jar"/>							
+				<include name="smackx.jar"/>
+				<include name="commons-lang-2.3.jar"/>
+				<include name="commons-logging-1.1.1.jar"/>				
+			</fileset>
+			<fileset dir="${resources}">
+				<include name="**/*.xml"/>							
+			</fileset>			
+		</jar>
+	</target>
+
+	<target name="dist" depends="rar" description="generate the distribution" />
+	
+	<target name="clean" description="clean up">
+		<delete dir="${build}" />
+		<delete dir="${dist}" />
+	</target>
+</project>
+
