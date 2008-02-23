@@ -1,13 +1,6 @@
-#summary One-sentence summary of this page.
+#summary Support and Feedback information for XMPPJCA
+#labels Phase-Deploy,Featured
 
-= Introduction =
+If you need support of if you have any questions or comments about XMPPJCA, please feel free to email me at alex6152 at gmail dot com.
 
-Add your content here.
-
-
-= Details =
-
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+Thank you!
