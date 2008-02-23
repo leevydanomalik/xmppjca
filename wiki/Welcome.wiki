@@ -8,4 +8,4 @@ XMPPJCA is a [http://java.sun.com/j2ee/connector/ JCA-compliant Resource Adapter
   * [Installation Download and Installation] instructions
   * [Support Support and Feedback] information
 
-&copy; Copyright 2008 Alex De Marco
+Copyright 2008 Alex De Marco
