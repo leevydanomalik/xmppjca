@@ -11,11 +11,22 @@ Please make sure that you have the following software already installed on your 
 
 == Steps to Follow ==
 
-To work with XMPPJCA, you will need to install both the resource adapter (.rar file) and an enterprise application (.ear file) to interact with the resource adapter. 
+To work with XMPPJCA, you will need to install both the resource adapter (.rar file) and an enterprise application (.ear file) to interact with the resource adapter. But, first things first, you will need to download the source code to build and package the components.
 
-=== Part 1 - The Resource Adapter (.rar) ===
+=== Step 1 - Download the source code ===
 
-  # Download this zip file and extract the contents to a local working directory.
+  # Download this zip file and extract the contents to a local working directory. The file structure that you will see should look something like this
+        {{{
+            project.home=C:\\eclipse\\workspace\\grapevineim-xmpp
+            project.j2ee.home=C:\\glassfish
+            project.xmpp.host=talk.google.com
+            project.xmpp.port=5222
+            project.xmpp.domain=gmail.com
+            project.xmpp.username=ENTER_YOUR_USERNAME_HERE
+            project.xmpp.password=ENTER_YOUR_PASSWORD_HERE
+        }}}
+
+=== Step 2 - Build The Resource Adapter (.rar) ===
 
   # Go to that directory, and create a file called project.properties. The contents of your file will contain project specific information to compile, as well as login credentials for the XMPP messaging server. Here is an example of the set of properties you will need to define:
         {{{
@@ -42,7 +53,7 @@ To work with XMPPJCA, you will need to install both the resource adapter (.rar f
 
   # deploy  
   
-=== Part 2 - The Enterprise Application (.ear) ===
+=== Step 3 - The Enterprise Application (.ear) ===
 
   # blah 
   # blah
