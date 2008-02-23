@@ -11,9 +11,9 @@ Please make sure that you have the following software already installed on your 
 
 == Steps to Follow ==
 
-To work with XMPPJCA, you will need to install both the resource adapter (*.rar file) and an enterprise application (*.ear file) to interact with the resource adapter. 
+To work with XMPPJCA, you will need to install both the resource adapter (.rar file) and an enterprise application (.ear file) to interact with the resource adapter. 
 
-=== Part 1 - The Resource Adapter (*.rar) ===
+=== Part 1 - The Resource Adapter (.rar) ===
 
   # Download this zip file and extract the contents to a local working directory.
   # Go to that directory, and create a file called project.properties
@@ -27,7 +27,7 @@ To work with XMPPJCA, you will need to install both the resource adapter (*.rar 
 
   # deploy  
   
-=== Part 2 - The Enterprise Application (*.ear) ===
+=== Part 2 - The Enterprise Application (.ear) ===
 
   # blah 
   # blah
