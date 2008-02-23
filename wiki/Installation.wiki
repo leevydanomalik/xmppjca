@@ -5,21 +5,30 @@
 
 Please make sure that you have the following software already installed on your machine.
 
-  * Java 5 (or greater)
-  * ANT 1.7 (or greater)
-  * GlassFish V2 
+  * [http://java.sun.com Java 5] (or greater)
+  * [http://ant.apache.org ANT 1.7] (or greater)
+  * [https://glassfish.dev.java.net GlassFish V2] 
 
 == Steps to Follow ==
 
-=== Part 1 - The Resource Adaptor (*.rar) ===
+To work with XMPPJCA, you will need to install both the resource adapter (*.rar file) and an enterprise application (*.ear file) to interact with the resource adapter. 
 
-  1. Download this zip file and extract the contents to a local working directory.
-  2. Go to that directory, and create a file called project.properties
-  3. Assuming 'javac' and 'ant' are in your PATH, run the main build file by executing the following command
-  	{{{ ant -f build.xml all }}} or simply {{{ ant }}}
-  4. deploy  
+=== Part 1 - The Resource Adapter (*.rar) ===
+
+  # Download this zip file and extract the contents to a local working directory.
+  # Go to that directory, and create a file called project.properties
+  # Assuming 'javac' and 'ant' are in your PATH, run the main build file by executing the following command
+
+  	{{{ ant -f build.xml all }}} 
+
+    or simply 
+
+        {{{ ant }}}
+
+  # deploy  
   
 === Part 2 - The Enterprise Application (*.ear) ===
-  1. 
-  2.
-  3.
+
+  # blah 
+  # blah
+  # blah
