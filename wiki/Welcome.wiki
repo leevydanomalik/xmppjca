@@ -1,47 +1,7 @@
-#summary Welcome page for GrapevineIM Wiki.
+#summary Introduction to XMPPJCA.
 #labels Featured
 
-= XMPPJCA (by [http://www.grapevine.im GrapevineIM]) = 
+=== XMPPJCA (by [http://www.grapevine.im GrapevineIM]) === 
 
-= Overview =
+XMPPJCA is a [http://java.sun.com/j2ee/connector/ JCA-compliant Resource Adapter] that lets you connect your J2EE application to an XMPP / Jabber instant messaging service like [http://www.google.com/talk/ Google Talk]. It complies with version 1.5 of the [http://http://java.sun.com/j2ee/connector/download.html Java Connector Architecture specification] and supports both [[inbound-messaging|inbound]] and [[outbound-messaging|outbound]] messaging. It is licensed as free, open-source software under the Apache 2.0 license agreement. It has been tested to run on [https://glassfish.dev.java.net/ GlassFish V2], and it is being used currently by [http://www.grapevine.im GrapevineIM]. It is built on top of the [http://www.igniterealtime.org/projects/smack/index.jsp Smack XMPP API] from Jive Software.
 
-== What is XMPPJCA? ==
-[http://java.sun.com/j2ee/connector/ JCA version 1.5 Resource Adapter] that lets you connect your J2EE application to an XMPP / Jabber instant messaging service like [http://www.google.com/talk/ Google Talk]. 
-
-== Usage ===
-TODO
-
-== Motivation ==
-Couldn't find a free, open-source implementation that supoprted inbound messaging, so I just built it myself. Also, see this very good implementation supporting outbound only [http://static.devel.it.su.se/xmppjca/usage.html XMPPJCA by Leif Johansson].
-
-== Feature Highlights ==
-TODO
-
-=== Java Connector Architecture version 1.5 compliant ===
-Complies with JCA 1.5 spec.
-
-=== Supports Inbound and Outbound Messaging ===
-This resource adapter implementation supports both inbound and outbound messaging. 
-
-=== Supports Multiple Concurrent Inbound Endpoints ===
-You can connect to XMPP service using multiple accounts (example: alex@grapevine.im AND sandy@grapevine.im) concurrently, send presence information for both accounts to the server, and then listen for messages to be routed to the different message-driven-beans for each account.
-
-== Dependencies ==
-*XMPPJCA* is built on the [http://www.igniterealtime.org/projects/smack/index.jsp Smack XMPP API] from Jive Software. 
-
-== Supported J2EE Platforms ==
-This resource adapter has been tested on [https://glassfish.dev.java.net/ GlassFish V2]. 
-
-== Known Users ==
-XMPPJCA is being used by [http://www.grapevine.im GrapevineIM].
-
-== License ==
-Apache 2.0
-
-= Documentation =
-
-== How to Get Started in 30 minutes or less ==
-
-== Architecture ==
-
-== Links / References ==
