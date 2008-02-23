@@ -1,20 +1,21 @@
+#summary How to install XMPPJCA
 #labels Phase-Deploy,Featured
 
 == Dependencies ==
 
-Make sure that you have the following software already installed on your machine.
+Please make sure that you have the following software already installed on your machine.
 
-	* Java 5
-	* ANT 1.7
-	* GlassFish V2
+	* Java 5 (or greater)
+	* ANT 1.7 (or greater)
+	* GlassFish V2 
 
-== Installation Steps ==
+== Steps to Follow ==
 
 === Part 1 - The Resource Adaptor (*.rar) ===
 
 	1. Download this zip file and extract the contents to a local working directory.
   	2. Go to that directory, and create a file called project.properties
-  	3. Assuming javac and ant are in your PATH, run the main build file by executing the 
+  	3. Assuming 'javac' and 'ant' are in your PATH, run the main build file by executing the 
   following command
   	{ ant -f build.xml all } or simply { ant }
   	4. deploy  

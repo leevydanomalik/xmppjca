@@ -1,4 +1,4 @@
-#summary Introduction to XMPPJCA.
+#summary Main project page
 #labels Featured
 
 XMPPJCA is a [http://java.sun.com/j2ee/connector/ JCA-compliant Resource Adapter] that lets you connect your J2EE application to an XMPP / Jabber instant messaging service like [http://www.google.com/talk/ Google Talk]. It complies with version 1.5 of the Java Connector Architecture specification and supports both inbound and outbound messaging. It is licensed as free, open-source software under the Apache 2.0 license agreement. It has been tested to run on [https://glassfish.dev.java.net/ GlassFish V2], and it is being used currently by [http://www.grapevine.im GrapevineIM]. It is built on top of the [http://www.igniterealtime.org/projects/smack/index.jsp Smack XMPP API] from Jive Software.

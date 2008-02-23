@@ -1,6 +1,6 @@
 #summary Support and Feedback information for XMPPJCA
 #labels Phase-Deploy,Featured
 
-If you need support of if you have any questions or comments about XMPPJCA, please feel free to email me at alex6152 at gmail dot com.
+If you need support or if you have any questions or comments about XMPPJCA, please feel free to email me at alex6152 at gmail dot com.
 
 Thank you!
