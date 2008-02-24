@@ -72,7 +72,11 @@ http://xmppjca.googlecode.com/files/xmppjca-project-properties.png
 
 Now that you have a project.properties file created, you should be able to build the resource adapter and enterprise application archive, and package everything up with ant. Run the following commands from the project root directory (or from within Eclipse)
   {{{ 
-  ant -f build.xml all 
+  # build the Resource Adapter (i.e. JCA connector)
+  ant -f build.xml connector 
+
+  # build the Enterprise Application Archive
+  ant -f build.xml connector 
   }}}
  
 === Step 3 - The Enterprise Application (.ear) ===
