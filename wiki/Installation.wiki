@@ -11,22 +11,11 @@ Please make sure that you have the following software already installed on your 
 
 == Steps to Follow ==
 
-To work with XMPPJCA, you will need to install both the resource adapter (.rar file) and an enterprise application (.ear file) to interact with the resource adapter. But first things first, you will need to check-out the source code and then build and package the components.
+To work with XMPPJCA, you will need to download, build, and install both the resource adapter (.rar file) and an enterprise application (.ear file). But first things first, you will need to check-out the source code from the [http://code.google.com/p/xmppjca/source/checkout SVN repository] and then build and package the components.
 
+=== Step 1 - Check-out the source code ===
 
-
-=== Step 1 - Download the source code ===
-
-  # Download this zip file and extract the contents to a local working directory. The file structure that you will see should look something like this
-  {{{
-  project.home=C:\\eclipse\\workspace\\grapevineim-xmpp
-  project.j2ee.home=C:\\glassfish
-           project.xmpp.host=talk.google.com
-            project.xmpp.port=5222
-            project.xmpp.domain=gmail.com
-            project.xmpp.username=ENTER_YOUR_USERNAME_HERE
-            project.xmpp.password=ENTER_YOUR_PASSWORD_HERE
-        }}}
+Once you have check-out the source code from the [http://code.google.com/p/xmppjca/source/checkout SVN repository] your file structure will look something like this (using Eclipse IDE Package Explorer View as an example)
 
 === Step 2 - Build The Resource Adapter (.rar) ===
 
@@ -40,7 +29,6 @@ To work with XMPPJCA, you will need to install both the resource adapter (.rar f
   project.xmpp.username=ENTER_YOUR_USERNAME_HERE
   project.xmpp.password=ENTER_YOUR_PASSWORD_HERE
   }}}
-
   # Assuming 'javac' and 'ant' are in your PATH, run the main build file by executing the following command
 
   {{{ 
