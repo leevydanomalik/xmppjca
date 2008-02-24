@@ -8,7 +8,7 @@ Please make sure that you have the following software already installed on your 
   * [http://java.sun.com Java 5] (or greater)
   * [http://ant.apache.org ANT 1.7] (or greater)
   * [https://glassfish.dev.java.net GlassFish V2] 
-  * [https://www.eclipse.org Eclipse IDE for Java EE Developers (version 3.3)] (optional) 
+  * [http://www.eclipse.org Eclipse IDE for Java EE Developers (version 3.3)] (optional) 
 
 == Steps to Follow ==
 
@@ -41,14 +41,27 @@ http://xmppjca.googlecode.com/files/xmppjca-project-glassfish-unbound.png
 
 === Step 2 - Build The Resource Adapter (.rar) ===
 
-  # Go to that directory, and create a file called project.properties. The contents of your file will contain project specific information to compile, as well as login credentials for the XMPP messaging server. Here is an example of the set of properties you will need to define:
+  # Now that you have check-out the code, go to the project's root directory and create a file called project.properties. The contents of your file will contain project specific information to build everything as well as login credentials for the XMPP messaging server. Here is the set of properties that you will need to define:
   {{{
+  # fully qualified path to your project files
   project.home=C:\\eclipse\\workspace\\grapevineim-xmpp
+
+  # fully qualified path to your glassfish installation
   project.j2ee.home=C:\\glassfish
+
+  # XMPP server hostname
   project.xmpp.host=talk.google.com
+
+  # XMPP server port
   project.xmpp.port=5222
+
+  # XMPP server domain name for user account
   project.xmpp.domain=gmail.com
+
+  # XMPP login username
   project.xmpp.username=ENTER_YOUR_USERNAME_HERE
+
+  # XMPP login password
   project.xmpp.password=ENTER_YOUR_PASSWORD_HERE
   }}}
   # Assuming 'javac' and 'ant' are in your PATH, run the main build file by executing the following command
