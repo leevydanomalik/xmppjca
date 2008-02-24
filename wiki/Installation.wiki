@@ -18,11 +18,20 @@ To work with XMPPJCA, you will need to build and deploy both the resource adapte
 
 To check-out the source code, refer to the [http://code.google.com/p/xmppjca/source/checkout SVN repository check-out instructions], or have a look at the screenshots below showing how you can add the repository and then check-out the project from within Eclipse using the [http://www.polarion.org/index.php?page=overview&project=subversive Polarion Subversive SVN plugin].
 
+* Figure 1: Add the SVN repository location to your workspace *
 http://xmppjca.googlecode.com/files/xmppjca-svn-repository.png
 
+* Figure 2: Check out the 'grapevineim-xmpp' project from 'trunk' *
 http://xmppjca.googlecode.com/files/xmppjca-svn-check-out.png
 
-Your file structure will look something like this (using Eclipse IDE Package Explorer View as an example)
+Your file structure will look something like Figure 3 below. If it's not compiling (red X's everywhere, check to make sure that your GlassFish server runtime library reference (part of your Project Build Path) is bound to the actual location of your glassfish instance on your machine.
+
+* Figure 3: Project structure *
+http://xmppjca.googlecode.com/files/xmppjca-project-structure.png
+
+* Figure 4: Compilation fails if GlassFish runtime is unbound. *
+http://xmppjca.googlecode.com/files/xmppjca-glassfish-unbound.png
+
 
 === Step 2 - Build The Resource Adapter (.rar) ===
 
