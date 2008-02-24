@@ -8,16 +8,17 @@ Please make sure that you have the following software already installed on your 
   * [http://java.sun.com Java 5] (or greater)
   * [http://ant.apache.org ANT 1.7] (or greater)
   * [https://glassfish.dev.java.net GlassFish V2] 
+  * [https://www.eclipse.org Eclipse IDE for Java EE Developers (version 3.3)] (optional) 
 
 == Steps to Follow ==
 
-To work with XMPPJCA, you will need to build and install both the resource adapter (.rar file) and an enterprise application (.ear file). But first you will need to check-out the source code from SVN. 
+To work with XMPPJCA, you will need to build and deploy both the resource adapter (.rar file) and an enterprise application (.ear file) onto your GlassFish app server. But first you will need to check-out the XMPPJCA project from SVN. 
 
 === Step 1 - Check-out the source code ===
 
-To check-out the source code, refer to the [http://code.google.com/p/xmppjca/source/checkout SVN repository check-out instructions], or have a look at the screenshots below showing how you can add the repository and then check-out the code from within your Eclipse IDE using the Polarion Subversive SVN plugin.
+To check-out the source code, refer to the [http://code.google.com/p/xmppjca/source/checkout SVN repository check-out instructions], or have a look at the screenshots below showing how you can add the repository and then check-out the project from within Eclipse using the [http://www.polarion.org/index.php?page=overview&project=subversive Polarion Subversive SVN plugin].
 
-http://xmppjca.googlecode.com/files/xmppjca-svn-repository.png
+[http://xmppjca.googlecode.com/files/xmppjca-svn-repository.png Add the SVN repository location]
 
 Your file structure will look something like this (using Eclipse IDE Package Explorer View as an example)
 
