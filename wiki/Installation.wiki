@@ -76,8 +76,12 @@ Now that you have a project.properties file created, you should be able to build
   ant -f build.xml connector 
 
   # build the Enterprise Application Archive
-  ant -f build.xml connector 
+  ant -f build.xml app
   }}}
+
+* Figure 6: Running ant build commands from within Eclipse *
+
+http://xmppjca.googlecode.com/files/xmppjca-project-ant-build.png
  
 === Step 3 - The Enterprise Application (.ear) ===
 
