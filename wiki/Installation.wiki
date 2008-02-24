@@ -27,10 +27,12 @@ http://xmppjca.googlecode.com/files/xmppjca-svn-check-out.png
 Your file structure will look something like Figure 3 below. If it's not compiling (red X's everywhere, check to make sure that your GlassFish server runtime library reference (part of your Project Build Path) is bound to the actual location of your glassfish instance on your machine.
 
 * Figure 3: Project structure *
+
 http://xmppjca.googlecode.com/files/xmppjca-project-structure.png
 
 * Figure 4: Compilation fails if GlassFish runtime is unbound. *
-http://xmppjca.googlecode.com/files/xmppjca-glassfish-unbound.png
+
+http://xmppjca.googlecode.com/files/xmppjca-project-glassfish-unbound.png
 
 
 === Step 2 - Build The Resource Adapter (.rar) ===
