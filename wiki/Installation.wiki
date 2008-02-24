@@ -38,9 +38,9 @@ If it's not compiling, check to make sure that your GlassFish server runtime lib
 
 http://xmppjca.googlecode.com/files/xmppjca-project-glassfish-unbound.png
 
-=== Step 2 - Build The Resource Adapter (.rar) ===
+=== Step 2 - Create your project.properties file ===
 
-  # Now that you have checked-out the code, go to the project's root directory and create a file called project.properties. The contents of your file will contain project specific information to build everything as well as login credentials for the XMPP messaging server. Here is the set of properties that you will need to define:
+Now that you have checked-out the code, go to the project's root directory and create a file called project.properties. The contents of your file will contain project specific information to build everything as well as login credentials for the XMPP messaging server. Here is the set of properties that you will need to define:
   {{{
   # fully qualified path to your project files
   project.home=C:\\eclipse\\workspace\\grapevineim-xmpp
@@ -68,16 +68,11 @@ http://xmppjca.googlecode.com/files/xmppjca-project-glassfish-unbound.png
 
 http://xmppjca.googlecode.com/files/xmppjca-project-properties.png
 
-  # Assuming 'javac' and 'ant' are in your PATH, run the main build file by executing the following command
+=== Step 3 - Build The Resource Adapter (.rar) and Enterprise Application archive (.ear) ===
 
+Now that you have a project.properties file created, you should be able to build the resource adapter and enterprise application archive, and package everything up with ant. Run the following commands from the project root directory (or from within Eclipse)
   {{{ 
   ant -f build.xml all 
-  }}} 
-
-  or simply 
-
-  {{{ 
-  ant 
   }}}
  
 === Step 3 - The Enterprise Application (.ear) ===
