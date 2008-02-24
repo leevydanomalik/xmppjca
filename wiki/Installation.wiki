@@ -1,7 +1,7 @@
 #summary How to install XMPPJCA
 #labels Phase-Deploy,Featured
 
-== Dependencies ==
+== What you will need ==
 
 Please make sure that you have the following software already installed on your machine.
 
@@ -13,6 +13,8 @@ Please make sure that you have the following software already installed on your 
 == 4 Steps to Follow ==
 
 To work with XMPPJCA, you will need to build and deploy both the resource adapter (.rar file) and an enterprise application (.ear file) onto your GlassFish server. But first you will need to check-out the XMPPJCA project from SVN (hosted by Google Code). 
+
+----
 
 === Step 1 - Check-out the source code ===
 
@@ -37,6 +39,8 @@ If it's not compiling, check to make sure that your GlassFish server runtime lib
 * Figure 4: If compilation check to make sure that your GlassFish runtime bound to proper location on your machine. *
 
 http://xmppjca.googlecode.com/files/xmppjca-project-glassfish-unbound.png
+
+----
 
 === Step 2 - Create your project.properties file ===
 
@@ -76,6 +80,8 @@ In the dependencies.xml file there is a hardcoded path to your project.propertie
 
 http://xmppjca.googlecode.com/files/xmppjca-project-dependencies-hack.png
 
+----
+
 === Step 3 - Build The Resource Adapter (.rar) and the Enterprise Application (.ear) ===
 
 Now that you have a project.properties file created, you should be able to build the resource adapter and enterprise application, and package everything up with ant. Run the following commands from the project root directory (or from within Eclipse)
@@ -91,4 +97,6 @@ Now that you have a project.properties file created, you should be able to build
 
 http://xmppjca.googlecode.com/files/xmppjca-project-ant-build.png
  
+----
+
 === Step 4 - Deploy the Resource Adapter (.rar) and the Enterprise Application (.ear) ===
