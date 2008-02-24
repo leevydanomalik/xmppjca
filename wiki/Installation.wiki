@@ -68,11 +68,9 @@ Now that you have checked-out the code, go to the project's root directory and c
 
 http://xmppjca.googlecode.com/files/xmppjca-project-properties.png
 
-<font color="red">
-=== Step 2.1 TODO!!! Fix this in dependencies.xml ===
+=== Step 2.1 - !!!TODO!!! Fix this in dependencies.xml ===
 
-In the dependencies.xml file there is a hardcoded path to your project root directory. You need to manually fix this path on your machine. I will fix this hack very soon!
-</font>
+In the dependencies.xml file there is a hardcoded path to your project root directory. You need to manually fix this path on your machine. I will fix this ugly hack very soon!
 
 === Step 3 - Build The Resource Adapter (.rar) and the Enterprise Application (.ear) ===
 
