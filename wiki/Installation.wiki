@@ -11,11 +11,15 @@ Please make sure that you have the following software already installed on your 
 
 == Steps to Follow ==
 
-To work with XMPPJCA, you will need to download, build, and install both the resource adapter (.rar file) and an enterprise application (.ear file). But first things first, you will need to check-out the source code from the [http://code.google.com/p/xmppjca/source/checkout SVN repository] and then build and package the components.
+To work with XMPPJCA, you will need to build and install both the resource adapter (.rar file) and an enterprise application (.ear file). But first you will need to check-out the source code from SVN. 
 
 === Step 1 - Check-out the source code ===
 
-Once you have check-out the source code from the [http://code.google.com/p/xmppjca/source/checkout SVN repository] your file structure will look something like this (using Eclipse IDE Package Explorer View as an example)
+To check-out the source code, refer to the [http://code.google.com/p/xmppjca/source/checkout SVN repository check-out instructions], or have a look at the screenshots below showing how you can add the repository and then check-out the code from within your Eclipse IDE using the Polarion Subversive SVN plugin.
+
+http://xmppjca.googlecode.com/files/xmppjca-svn-repository.png
+
+Your file structure will look something like this (using Eclipse IDE Package Explorer View as an example)
 
 === Step 2 - Build The Resource Adapter (.rar) ===
 
