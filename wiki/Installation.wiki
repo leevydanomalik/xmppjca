@@ -10,7 +10,7 @@ Please make sure that you have the following software already installed on your 
   * [https://glassfish.dev.java.net GlassFish V2] 
   * [http://www.eclipse.org Eclipse IDE for Java EE Developers (version 3.3)] (optional) 
 
-== Steps to Follow ==
+== 4 Steps to Follow ==
 
 To work with XMPPJCA, you will need to build and deploy both the resource adapter (.rar file) and an enterprise application (.ear file) onto your GlassFish server. But first you will need to check-out the XMPPJCA project from SVN (hosted by Google Code). 
 
@@ -68,22 +68,28 @@ Now that you have checked-out the code, go to the project's root directory and c
 
 http://xmppjca.googlecode.com/files/xmppjca-project-properties.png
 
-=== Step 3 - Build The Resource Adapter (.rar) and Enterprise Application archive (.ear) ===
+<font color="red">
+=== Step 2.1 TODO!!! Fix this in dependencies.xml ===
 
-Now that you have a project.properties file created, you should be able to build the resource adapter and enterprise application archive, and package everything up with ant. Run the following commands from the project root directory (or from within Eclipse)
+In the dependencies.xml file there is a hardcoded path to your project root directory. You need to manually fix this path on your machine. I will fix this hack very soon!
+</font>
+
+=== Step 3 - Build The Resource Adapter (.rar) and the Enterprise Application (.ear) ===
+
+Now that you have a project.properties file created, you should be able to build the resource adapter and enterprise application, and package everything up with ant. Run the following commands from the project root directory (or from within Eclipse)
   {{{ 
   # build the Resource Adapter (i.e. JCA connector)
-  ant -f build.xml connector 
+  ant connector 
 
-  # build the Enterprise Application Archive
-  ant -f build.xml app
+  # build the Enterprise Application
+  ant app
   }}}
 
 * Figure 6: Running ant build commands from within Eclipse *
 
 http://xmppjca.googlecode.com/files/xmppjca-project-ant-build.png
  
-=== Step 3 - The Enterprise Application (.ear) ===
+=== Step 4 - The Resource Adapter (.rar) and the Enterprise Application (.ear) ===
 
   # blah 
   # blah
