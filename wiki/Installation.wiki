@@ -34,7 +34,7 @@ http://xmppjca.googlecode.com/files/xmppjca-project-structure.png
 
 If it's not compiling, check to make sure that your GlassFish server runtime library reference (part of your project Build Path) is bound to the actual location of your GlassFish instance on your machine.
 
-* Figure 4: Compilation fails if GlassFish runtime is unbound. *
+* Figure 4: If compilation check to make sure that your GlassFish runtime bound to proper location on your machine. *
 
 http://xmppjca.googlecode.com/files/xmppjca-project-glassfish-unbound.png
 
