@@ -38,7 +38,6 @@ If it's not compiling, check to make sure that your GlassFish server runtime lib
 
 http://xmppjca.googlecode.com/files/xmppjca-project-glassfish-unbound.png
 
-
 === Step 2 - Build The Resource Adapter (.rar) ===
 
   # Now that you have check-out the code, go to the project's root directory and create a file called project.properties. The contents of your file will contain project specific information to build everything as well as login credentials for the XMPP messaging server. Here is the set of properties that you will need to define:
@@ -64,6 +63,11 @@ http://xmppjca.googlecode.com/files/xmppjca-project-glassfish-unbound.png
   # XMPP login password
   project.xmpp.password=ENTER_YOUR_PASSWORD_HERE
   }}}
+
+* Figure 5: project.properties file contents *
+
+http://xmppjca.googlecode.com/files/xmppjca-project-properties.png
+
   # Assuming 'javac' and 'ant' are in your PATH, run the main build file by executing the following command
 
   {{{ 
