@@ -110,7 +110,7 @@ http://xmppjca.googlecode.com/files/xmppjca-project-ant-build-output.png
 
 ----
 
-=== Step 4 - Deploy the Resource Adapter (.rar) and the Enterprise Application (.ear) ===
+=== Step 4 - Deploy the Resource Adapter (.rar) ===
 
   # To deploy the resource adapter start your GlassFish server, and then use the asadmin utility to deploy the resource adapter as shown below. The resource adapter will be deployed using the name 'grapevineim-xmpp-connector-1.0'
   {{{
@@ -125,9 +125,18 @@ http://xmppjca.googlecode.com/files/xmppjca-project-ant-build-output.png
   asadmin> create-connector-resource --poolname XmppMessagingConnectorPool eis/ra/XmppMessagingConnector
   }}}
 
+* Figure 9: sun-ejb-jar.xml res-ref-name refers to the JNDI name of the connection pool *
+
 http://xmppjca.googlecode.com/files/xmppjca-project-sun-ejb-jar-res-ref-name.png
 
-=== Optional ===
+----
+
+=== Step 5 - Deploy the Enterprise Application ===
+
+The Enterprise Application contains an inbound message-driven bean component as well as an outbound message-driven bean component. When the inbound MDB gets deployed, the container will activate it as an 'endpoint' for inbound messages received from the resource adapter.    The inbound MDB will then put messages onto a JMS queue for further processing.
+
+The outbound MDB simply listens for messages from the JMS queue. When it gets a new message, it will do a JNDI lookup to get a handle for the resource adapter, do a small transformation on the inbound message, and then send it back out to the original sender.
+
   # Create a JMS resource to ...
   {{{
   asadmin> create-jms-resource --restype javax.jms.QueueConnectionFactory jms/XmppInboundQueueConnectionFactory
@@ -136,3 +145,9 @@ http://xmppjca.googlecode.com/files/xmppjca-project-sun-ejb-jar-res-ref-name.png
   {{{
   asadmin> create-jms-resource --restype javax.jms.Queue jms/xmpp/inbound
   }}}
+
+TODO
+
+=== Step 6 - Test the Installation ===
+
+TODO
