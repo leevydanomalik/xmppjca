@@ -99,7 +99,11 @@ Now that you have a project.properties file created, you should be able to build
 * Figure 7: Running ant build commands from within Eclipse *
 
 http://xmppjca.googlecode.com/files/xmppjca-project-ant-build.png
- 
+
+* Figure 8: Output files available in 'target' directories *
+
+http://xmppjca.googlecode.com/files/xmppjca-project-ant-build-output.png
+
 ----
 
 === Step 4 - Deploy the Resource Adapter (.rar) and the Enterprise Application (.ear) ===
