@@ -17,7 +17,7 @@
 
 	<target name="compile" depends="init" description="compile the source">
 		<javac srcdir="${src}" destdir="${build}" debug="true">
-			<classpath path="${j2ee.home}/lib/javaee.jar"/>			
+			<classpath path="${project.j2ee.home}/lib/javaee.jar"/>			
 			<classpath path="${project.home}/lib/smack.jar"/>			
 			<classpath path="${project.home}/lib/smackx.jar"/>			
 			<classpath path="${project.home}/lib/commons-lang-2.3.jar"/>			
