@@ -112,7 +112,22 @@ http://xmppjca.googlecode.com/files/xmppjca-project-ant-build-output.png
 
 === Step 4 - Deploy the Resource Adapter (.rar) and the Enterprise Application (.ear) ===
 
-Before you deploy the resource adapter and the enterprise app, you'll need to configure your GlassFish server. Here is how...
+  # To deploy the resource adapter start your GlassFish server, and then use the asadmin utility to deploy the resource adapter as shown below. The resource adapter will be deployed using the name 'grapevineim-xmpp-connector-1.0'
+  {{{
+  asadmin> deploy grapevineim-xmpp-connector-1.0.rar
+  }}}
+  # Now you'll want to create a connection pool of container-managed connections to the resource adapter. Note that the connections that will be created will implement the com.grapevineim.xmpp.XmppConnectionFactory interface defined in the 'api' project' as indicated by the 'connectiondefinition' argument.
+  {{{
+  asadmin> create-connector-connection-pool --raname grapevineim-xmpp-connector-1.0 --connectiondefinition com.grapevineim.xmpp.XmppConnectionFactory XmppMessagingConnectorPool
+  }}}
+  # Finally, you'll want to associate the connection pool with a JNDI name. Note that this name is used in 'sun-ejb-jar.xml' as shown in Figure 9.
+  {{{
+  asadmin> create-connector-resource --poolname XmppMessagingConnectorPool eis/ra/XmppMessagingConnector
+  }}}
+
+http://xmppjca.googlecode.com/files/xmppjca-project-sun-ejb-jar-res-ref-name.png
+
+=== Optional ===
   # Create a JMS resource to ...
   {{{
   asadmin> create-jms-resource --restype javax.jms.QueueConnectionFactory jms/XmppInboundQueueConnectionFactory
@@ -120,16 +135,4 @@ Before you deploy the resource adapter and the enterprise app, you'll need to co
   # Create a JMS queue to ...
   {{{
   asadmin> create-jms-resource --restype javax.jms.Queue jms/xmpp/inbound
-  }}}
-  # Deploy the resource adapter
-  {{{
-  asadmin> deploy grapevineim-xmpp-connector-1.0.rar
-  }}}
-  # Create a connection pool for 
-  {{{
-  asadmin.bat create-connector-connection-pool --raname grapevineim-xmpp-connector-1.0 --connectiondefinition com.grapevineim.xmpp.XmppConnectionFactory XmppMessagingConnectorPool
-  }}}
-  # Associate the connection pool with the resource adapter
-  {{{
-asadmin.bat create-connector-resource --poolname XmppMessagingConnectorPool eis/ra/XmppMessagingConnector
   }}}
