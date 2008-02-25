@@ -111,3 +111,25 @@ http://xmppjca.googlecode.com/files/xmppjca-project-ant-build-output.png
 ----
 
 === Step 4 - Deploy the Resource Adapter (.rar) and the Enterprise Application (.ear) ===
+
+Before you deploy the resource adapter and the enterprise app, you'll need to configure your GlassFish server. Here is how...
+  # Create a JMS resource to ...
+  {{{
+  asadmin> create-jms-resource --restype javax.jms.QueueConnectionFactory jms/XmppInboundQueueConnectionFactory
+  }}}
+  # Create a JMS queue to ...
+  {{{
+  asadmin> create-jms-resource --restype javax.jms.Queue jms/xmpp/inbound
+  }}}
+  # Deploy the resource adapter
+  {{{
+  asadmin> deploy grapevineim-xmpp-connector-1.0.rar
+  }}}
+  # Create a connection pool for 
+  {{{
+  asadmin.bat create-connector-connection-pool --raname grapevineim-xmpp-connector-1.0 --connectiondefinition com.grapevineim.xmpp.XmppConnectionFactory XmppMessagingConnectorPool
+  }}}
+  # Associate the connection pool with the resource adapter
+  {{{
+asadmin.bat create-connector-resource --poolname XmppMessagingConnectorPool eis/ra/XmppMessagingConnector
+  }}}
