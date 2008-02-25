@@ -10,7 +10,7 @@ Please make sure that you have the following software already installed on your 
   * [https://glassfish.dev.java.net GlassFish V2] 
   * [http://www.eclipse.org Eclipse IDE for Java EE Developers (version 3.3)] (optional) 
 
-== 4 Steps to Follow ==
+== Installation: 5 Steps ==
 
 To work with XMPPJCA, you will need to build and deploy both the resource adapter (.rar file) and an enterprise application (.ear file) onto your GlassFish server. But first you will need to check-out the XMPPJCA project from SVN (hosted by Google Code). 
 
@@ -51,6 +51,9 @@ Now that you have checked-out the code, go to the project's root directory and c
 
   # fully qualified path to your glassfish installation
   project.j2ee.home=C:\\glassfish
+
+  # project version ID
+  project.version=1.0
 
   # XMPP server hostname
   project.xmpp.host=talk.google.com
