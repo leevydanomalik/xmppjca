@@ -9,6 +9,7 @@ import javax.jms.ObjectMessage;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -39,7 +40,7 @@ public class XmppOutboundMDB implements MessageDrivenBean,
 			if (message instanceof ObjectMessage) {
 				XmppMessage xmppMessage = (XmppMessage) ((ObjectMessage) message)
 						.getObject();
-				xmppMessage.setBody("hello");
+				xmppMessage.setBody(StringUtils.reverse(xmppMessage.getBody()));
 				xmppMessage.setPacketId(null);
 				String to = xmppMessage.getFrom();
 				xmppMessage.setFrom(xmppMessage.getTo());
