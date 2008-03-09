@@ -151,7 +151,7 @@ The outbound MDB simply listens for messages from the same JMS queue. When it ge
 
   # Create a JMS resource to create connections to the JMS queue
   {{{
-  asadmin> create-jms-resource --restype javax.jms.QueueConnectionFactory jms/XmppInboundQueueConnectionFactory
+  asadmin> create-jms-resource --restype javax.jms.QueueConnectionFactory jms/XmppQueueConnectionFactory
   }}}
   # Create a JMS queue. Inbound MDB will enqueue messages. Outbound MDB will dequeue messages.
   {{{
