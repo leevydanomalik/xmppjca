@@ -160,8 +160,16 @@ The outbound MDB simply listens for messages from the same JMS queue. When it ge
 
 [Installation Back to Top of Page]
 ----
+
 === Step 6 Test the Installation ===
 
 TODO
 
 [Installation Back to Top of Page]
+----
+
+=== References ===
+
+For further information, your can refer to these links:
+
+  * [http://developers.sun.com/appserver/reference/techart/as8_connectors/ Getting Started with Connectors in Sun Java System Application Server Platform Edition 8.0]
