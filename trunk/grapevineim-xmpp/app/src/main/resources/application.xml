@@ -5,4 +5,7 @@
 	<module>
 		<ejb>grapevineim-xmpp-inbound-mdb-1.0.jar</ejb>
 	</module>
+	<module>
+		<ejb>grapevineim-xmpp-outbound-mdb-1.0.jar</ejb>
+	</module>
 </application>
