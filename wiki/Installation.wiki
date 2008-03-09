@@ -9,6 +9,7 @@ Please make sure that you have the following software already installed on your 
   * [http://ant.apache.org ANT 1.7] (or greater)
   * [https://glassfish.dev.java.net GlassFish V2] 
   * [http://www.eclipse.org Eclipse IDE for Java EE Developers (version 3.3)] (optional) 
+  * [http://www.polarion.org/index.php?page=overview&project=subversive Polarion Subversive SVN plugin] for Eclipse (optional)
 
 ----
 
@@ -20,7 +21,7 @@ To work with XMPPJCA, you will need to build and deploy both the resource adapte
 
 === Step 1 - Check-out the source code ===
 
-To check-out the source code, refer to the [http://code.google.com/p/xmppjca/source/checkout SVN repository check-out instructions], or have a look at the screenshots below showing how you can add the repository and then check-out the project from within Eclipse using the [http://www.polarion.org/index.php?page=overview&project=subversive Polarion Subversive SVN plugin].
+To check-out the source code, refer to the [http://code.google.com/p/xmppjca/source/checkout SVN repository check-out instructions], or have a look at the screenshots below showing how you can use Eclipse to add the repository to your workspace and then check-out the project. You will need to install the  [http://www.polarion.org/index.php?page=overview&project=subversive Polarion Subversive SVN plugin] first though.
 
 * Figure 1: Add the SVN repository location to your workspace *
 
