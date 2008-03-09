@@ -91,6 +91,7 @@ In the dependencies.xml file there is a hardcoded path to your project.propertie
 
 http://xmppjca.googlecode.com/files/xmppjca-project-dependencies-hack.png
 
+[Installation Back to Top of Page]
 ----
 
 === Step 3 - Build The Resource Adapter (.rar) and the Enterprise Application (.ear) ===
@@ -114,6 +115,7 @@ You will find the packaged .rar and .ear files in the respective 'target' direct
 
 http://xmppjca.googlecode.com/files/xmppjca-project-ant-build-output.png
 
+[Installation Back to Top of Page]
 ----
 
 === Step 4 - Deploy the Resource Adapter (.rar) ===
@@ -135,6 +137,7 @@ http://xmppjca.googlecode.com/files/xmppjca-project-ant-build-output.png
 
 http://xmppjca.googlecode.com/files/xmppjca-project-sun-ejb-jar-res-ref-name.png
 
+[Installation Back to Top of Page]
 ----
 
 === Step 5 - Deploy the Enterprise Application ===
@@ -154,6 +157,10 @@ The outbound MDB simply listens for messages from the JMS queue. When it gets a 
 
 TODO
 
+[Installation Back to Top of Page]
+----
 === Step 6 - Test the Installation ===
 
 TODO
+
+[Installation Back to Top of Page]
