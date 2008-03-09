@@ -18,6 +18,8 @@ Please make sure that you have the following software already installed on your 
 To work with XMPPJCA, you will need to build and deploy both the resource adapter (.rar file) and an enterprise application (.ear file) onto your GlassFish server. But first you will need to check-out the XMPPJCA project from SVN (hosted by Google Code). 
 
   * [Installation#Step_1_Checkout_the_source_code Step 1 Checkout the source code]
+  * [Installation#Step_2_Create_your_project_properties_file Step 2 Create your project properties file]
+
 
 ----
 
@@ -47,7 +49,7 @@ http://xmppjca.googlecode.com/files/xmppjca-project-glassfish-unbound.png
 
 ----
 
-=== <a target="step2">Step 2</a> - Create your project.properties file ===
+=== Step 2 Create your project properties file ===
 
 Now that you have checked-out the code, go to the project's root directory and create a file called project.properties. The contents of your file will contain project specific information to build everything as well as login credentials for the XMPP messaging server. Here is the set of properties that you will need to define:
   {{{
