@@ -47,6 +47,7 @@ If it's not compiling, check to make sure that your !GlassFish server runtime li
 
 http://xmppjca.googlecode.com/files/xmppjca-project-glassfish-unbound.png
 
+[Installation Back to Top of Page]
 ----
 
 === Step 2 Create your project properties file ===
