@@ -25,13 +25,22 @@
 		</javac>
 	</target>
 
-	<target name="jar" depends="compile">
+	<target name="jar" depends="compile,copy-resources">
 		<mkdir dir="${dist}" />
 		<jar jarfile="${dist}/${ant.project.name}-${project.version}.jar" basedir="${build}">
 			<fileset dir="${build.resources}">
 				<include name="**/*.xml" />
 			</fileset>
 		</jar>
+	</target>
+
+	<target name="copy-resources">
+		<mkdir dir="${build.resources}" />
+		<copy overwrite="true" todir="${build.resources}">
+			<fileset dir="${src.resources}">
+				<include name="**/*.xml" />
+			</fileset>
+		</copy>
 	</target>
 
 	<target name="dist" depends="jar" description="generate the distribution" />
