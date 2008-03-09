@@ -5,7 +5,7 @@
 		<name>XmppInboundMDB</name>
 		<ejb>
 			<ejb-name>XmppInboundMDB</ejb-name>
-			<jndi-name>jms/xmpp/inbound</jndi-name>
+			<jndi-name>jms/xmpp/messagequeue</jndi-name>
 			<resource-ref>
 				<res-ref-name>ra/XmppMessagingConnector</res-ref-name>
 				<jndi-name>eis/ra/XmppMessagingConnector</jndi-name>

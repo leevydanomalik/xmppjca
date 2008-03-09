@@ -57,8 +57,8 @@ public class XmppInboundMDB implements MessageDrivenBean, XmppMessageListener {
 		Connection connection = null;
 		try {
 			Context ctx = new InitialContext();
-            ConnectionFactory     connectionFactory = (ConnectionFactory)ctx.lookup("jms/tConnectionFactory");
-            Queue queue = (Queue)ctx.lookup("jms/tQueue");
+            ConnectionFactory     connectionFactory = (ConnectionFactory)ctx.lookup("jms/XmppQueueConnectionFactory");
+            Queue queue = (Queue)ctx.lookup("jms/xmpp/messagequeue");
             connection = connectionFactory.createConnection();
             Session session = connection.createSession(false,Session.AUTO_ACKNOWLEDGE);
             MessageProducer messageProducer = session.createProducer(queue);
