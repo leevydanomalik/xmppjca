@@ -25,34 +25,7 @@
 		</javac>
 	</target>
 
-	<target name="copy-and-replace-tokens">
-		<mkdir dir="${build.resources}" />
-		<copy overwrite="true" todir="${build.resources}">
-			<fileset dir="${src.resources}">
-				<include name="**/*.xml" />
-			</fileset>
-		</copy>
-		<replace dir="${build.resources}" token="@RESOURCE_ADAPTER_MID@" value="grapevineim-xmpp-connector-${project.version}">
-			<include name="**/*.xml" />
-		</replace>
-		<replace dir="${build.resources}" token="@XMPP_HOST@" value="${xmpp.host}">
-			<include name="**/*.xml" />
-		</replace>
-		<replace dir="${build.resources}" token="@XMPP_PORT@" value="${xmpp.port}">
-			<include name="**/*.xml" />
-		</replace>
-		<replace dir="${build.resources}" token="@XMPP_DOMAIN@" value="${xmpp.domain}">
-			<include name="**/*.xml" />
-		</replace>
-		<replace dir="${build.resources}" token="@XMPP_USERNAME@" value="${xmpp.username}">
-			<include name="**/*.xml" />
-		</replace>
-		<replace dir="${build.resources}" token="@XMPP_PASSWORD@" value="${xmpp.password}">
-			<include name="**/*.xml" />
-		</replace>
-	</target>
-
-	<target name="jar" depends="compile,copy-and-replace-tokens">
+	<target name="jar" depends="compile">
 		<mkdir dir="${dist}" />
 		<jar jarfile="${dist}/${ant.project.name}-${project.version}.jar" basedir="${build}">
 			<fileset dir="${build.resources}">
