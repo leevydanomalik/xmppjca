@@ -19,7 +19,10 @@ To work with XMPPJCA, you will need to build and deploy both the resource adapte
 
   * [Installation#Step_1_Checkout_the_source_code Step 1 Checkout the source code]
   * [Installation#Step_2_Create_your_project_properties_file Step 2 Create your project properties file]
-
+  * [Installation#Step_3_Build_The_Resource_Adapter_and_the_Enterprise_Application Step 3 Build The Resource Adapter and the Enterprise Application]
+  * [Installation#Step_4_Deploy_the_Resource_Adapter Step 4 Deploy the Resource Adapter]
+  * [Installation#Step_5_Deploy_the_Enterprise_Application Step 5 Deploy the Enterprise Application]
+  * [Installation#Step_6_Test_the_Installation Step 6 Test the Installation]
 
 ----
 
@@ -94,7 +97,7 @@ http://xmppjca.googlecode.com/files/xmppjca-project-dependencies-hack.png
 [Installation Back to Top of Page]
 ----
 
-=== Step 3 - Build The Resource Adapter (.rar) and the Enterprise Application (.ear) ===
+=== Step 3 Build The Resource Adapter and the Enterprise Application ===
 
 Now that you have a project.properties file created, you should be able to build the resource adapter and enterprise application, and package everything up with ant. Run the following commands from the project root directory (or from within Eclipse)
   {{{ 
@@ -118,7 +121,7 @@ http://xmppjca.googlecode.com/files/xmppjca-project-ant-build-output.png
 [Installation Back to Top of Page]
 ----
 
-=== Step 4 - Deploy the Resource Adapter (.rar) ===
+=== Step 4 Deploy the Resource Adapter ===
 
   # To deploy the resource adapter start your !GlassFish server, and then use the asadmin utility to deploy the resource adapter as shown below. The resource adapter will be deployed using the name 'grapevineim-xmpp-connector-1.0'
   {{{
@@ -140,7 +143,7 @@ http://xmppjca.googlecode.com/files/xmppjca-project-sun-ejb-jar-res-ref-name.png
 [Installation Back to Top of Page]
 ----
 
-=== Step 5 - Deploy the Enterprise Application ===
+=== Step 5 Deploy the Enterprise Application ===
 
 The Enterprise Application contains an inbound message-driven bean component as well as an outbound message-driven bean component. When the inbound MDB gets deployed, the container will activate it as an 'endpoint' for inbound messages received from the resource adapter.    The inbound MDB will then put messages onto a JMS queue for further processing.
 
@@ -159,7 +162,7 @@ TODO
 
 [Installation Back to Top of Page]
 ----
-=== Step 6 - Test the Installation ===
+=== Step 6 Test the Installation ===
 
 TODO
 
