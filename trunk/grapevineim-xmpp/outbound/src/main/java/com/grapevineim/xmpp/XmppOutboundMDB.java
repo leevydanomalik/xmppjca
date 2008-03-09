@@ -58,16 +58,17 @@ public class XmppOutboundMDB implements MessageDrivenBean,
 		LOG.info("<MDB> In XmppOutboundMDB.remove()");
 	}
 
-	private void reply(XmppMessage m) {
+	private void reply(XmppMessage m) throws Exception {
 		XmppConnection connection = null;
 		try {
 			Context ctx = new InitialContext();
 			XmppConnectionFactory connectionFactory = (XmppConnectionFactory) ctx
-					.lookup("ra/XmppMessagingConnector");
+					.lookup("eis/ra/XmppMessagingConnector");
 			connection = connectionFactory.createConnection(m.getConnectionSpec());
 			connection.sendMessage(m);
 		} catch (Exception e) {
 			LOG.error("<MDB> Error", e);
+			throw e;
 		} finally {
 			try {
 				if (connection != null) {
