@@ -123,7 +123,7 @@ http://xmppjca.googlecode.com/files/xmppjca-project-ant-build-output.png
 
 === Step 4 Deploy the Resource Adapter ===
 
-  # To deploy the resource adapter start your !GlassFish server, and then use the asadmin utility to deploy the resource adapter as shown below. The resource adapter will be deployed using the name 'grapevineim-xmpp-connector-1.0'
+  # To deploy the resource adapter start your !GlassFish server, and then use the asadmin utility to deploy the resource adapter as shown below. The resource adapter will be deployed using the name 'grapevineim-xmpp-connector-1.0'. You will may need to fully qualify the path to the resource adapter file. such as './connector/target/grapevineim-xmpp-connector-1.0.rar'
   {{{
   asadmin> deploy grapevineim-xmpp-connector-1.0.rar
   }}}
