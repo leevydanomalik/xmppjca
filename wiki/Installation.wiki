@@ -13,7 +13,7 @@ Please make sure that you have the following software already installed on your 
 
 ----
 
-== How to get started with XMPPJCA in 5 Steps ==
+== How to get started with XMPPJCA in 6 Steps ==
 
 To work with XMPPJCA, you will need to build and deploy both the resource adapter (.rar file) and an enterprise application (.ear file) onto your !GlassFish server. But first you will need to check-out the XMPPJCA project from SVN (hosted by Google Code). 
 
