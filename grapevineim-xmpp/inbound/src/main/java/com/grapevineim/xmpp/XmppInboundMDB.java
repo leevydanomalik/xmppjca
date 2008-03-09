@@ -40,7 +40,7 @@ public class XmppInboundMDB implements MessageDrivenBean, XmppMessageListener {
 
 	public void onMessage(XmppMessage message) {
 		try {
-			LOG.info("<MDB> ---- Got a message: " + message.getBody());
+			LOG.info("<MDB> ---- Inbound MDB got a message: " + message.getBody());
 			enqueue(message);
 		} catch (Exception e) {
 			LOG.info("<MDB> Could not receive message: ", e);
