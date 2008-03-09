@@ -45,7 +45,7 @@ http://xmppjca.googlecode.com/files/xmppjca-project-glassfish-unbound.png
 
 ----
 
-=== Step 2 - Create your project.properties file ===
+=== <a target="step2">Step 2</a> - Create your project.properties file ===
 
 Now that you have checked-out the code, go to the project's root directory and create a file called project.properties. The contents of your file will contain project specific information to build everything as well as login credentials for the XMPP messaging server. Here is the set of properties that you will need to define:
   {{{
