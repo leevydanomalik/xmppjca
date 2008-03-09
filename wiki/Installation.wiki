@@ -17,11 +17,11 @@ Please make sure that you have the following software already installed on your 
 
 To work with XMPPJCA, you will need to build and deploy both the resource adapter (.rar file) and an enterprise application (.ear file) onto your GlassFish server. But first you will need to check-out the XMPPJCA project from SVN (hosted by Google Code). 
 
-  * [Installation#Step_1_-_Checkout_the_source_code Step 1 - Checkout the source code]
+  * [Installation#Step_1_Checkout_the_source_code Step 1 Checkout the source code]
 
 ----
 
-=== Step 1 - Checkout the source code ===
+=== Step 1 Checkout the source code ===
 
 To check-out the source code, refer to the [http://code.google.com/p/xmppjca/source/checkout SVN repository check-out instructions], or have a look at the screenshots below showing how you can use Eclipse to add the repository to your workspace and then check-out the project. You will need to install the  [http://www.polarion.org/index.php?page=overview&project=subversive Polarion Subversive SVN plugin] first though.
 
