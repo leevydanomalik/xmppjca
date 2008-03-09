@@ -131,7 +131,7 @@ http://xmppjca.googlecode.com/files/xmppjca-project-ant-build-output.png
   {{{
   asadmin> create-connector-connection-pool --raname grapevineim-xmpp-connector-1.0 --connectiondefinition com.grapevineim.xmpp.XmppConnectionFactory XmppMessagingConnectorPool
   }}}
-  # Finally, you'll want to associate the connection pool with a JNDI name. This name is used when doing an explicit JNDI lookup for outbound messaging, and it is also using for inbound messaging as defined in './inbound/source/main/resources/META-INF/sun-ejb-jar.xml' as shown in Figure 9. Basically, when the inbound MDB gets deployed, a lookup happens with the JNDI name in order to register the inbound MDB as the "endpoint" or listener for messages incoming through from the RA. 
+  # Finally, you'll want to associate the connection pool with a JNDI name. This name is used when doing an explicit JNDI lookup for outbound messaging, and it is also using for inbound messaging as defined in './inbound/source/main/resources/META-INF/sun-ejb-jar.xml' as shown in Figure 9. Basically, when the inbound MDB gets deployed, a JNDI lookup happens  internally in order to register the inbound MDB as the "endpoint" or listener/receiver for messages incoming through from the RA. 
   {{{
   asadmin> create-connector-resource --poolname XmppMessagingConnectorPool eis/ra/XmppMessagingConnector
   }}}
