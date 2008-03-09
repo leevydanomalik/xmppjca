@@ -145,20 +145,18 @@ http://xmppjca.googlecode.com/files/xmppjca-project-sun-ejb-jar-res-ref-name.png
 
 === Step 5 Deploy the Enterprise Application ===
 
-The Enterprise Application contains an inbound message-driven bean component as well as an outbound message-driven bean component. When the inbound MDB gets deployed, the container will activate it as an 'endpoint' for inbound messages received from the resource adapter.    The inbound MDB will then put messages onto a JMS queue for further processing.
+The Enterprise Application contains an inbound message-driven bean component as well as an outbound message-driven bean component. When the inbound MDB gets deployed, the container will activate it as an 'endpoint' for inbound messages received from the resource adapter.    In our system design, the inbound MDB will put messages that it receives onto a JMS queue  for further processing. This queue has a JNDI name 'jms/xmpp/messagequeue'.
 
-The outbound MDB simply listens for messages from the JMS queue. When it gets a new message, it will do a JNDI lookup to get a handle for the resource adapter, do a small transformation on the inbound message, and then send it back out to the original sender.
+The outbound MDB simply listens for messages from the same JMS queue. When it gets a new message, it will do a JNDI lookup to get a outbound connection handle for the resource adapter. It then does a small transformation on the inbound message (change 'from' address to 'to' address and change body of message to 'hello'), and then send it back out to the original sender.
 
-  # Create a JMS resource to ...
+  # Create a JMS resource to create connections to the JMS queue
   {{{
   asadmin> create-jms-resource --restype javax.jms.QueueConnectionFactory jms/XmppInboundQueueConnectionFactory
   }}}
-  # Create a JMS queue to ...
+  # Create a JMS queue. Inbound MDB will enqueue messages. Outbound MDB will dequeue messages.
   {{{
-  asadmin> create-jms-resource --restype javax.jms.Queue jms/xmpp/inbound
+  asadmin> create-jms-resource --restype javax.jms.Queue jms/xmpp/messagequeue
   }}}
-
-TODO
 
 [Installation Back to Top of Page]
 ----
