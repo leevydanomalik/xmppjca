@@ -121,7 +121,7 @@ http://xmppjca.googlecode.com/files/xmppjca-project-ant-build-output.png
   {{{
   asadmin> deploy grapevineim-xmpp-connector-1.0.rar
   }}}
-  # Now you'll want to create a connection pool of container-managed connections to the resource adapter. Note that the connections that will be created will implement the com.grapevineim.xmpp.XmppConnectionFactory interface defined in the 'api' project' as indicated by the 'connectiondefinition' argument.
+  # Now you'll want to create a connection pool of container-managed connections to the resource adapter. Note that the connections that will be created will implement the !com.grapevineim.xmpp.XmppConnectionFactory interface defined in the 'api' project' as indicated by the 'connectiondefinition' argument.
   {{{
   asadmin> create-connector-connection-pool --raname grapevineim-xmpp-connector-1.0 --connectiondefinition com.grapevineim.xmpp.XmppConnectionFactory XmppMessagingConnectorPool
   }}}
