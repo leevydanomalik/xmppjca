@@ -157,6 +157,10 @@ The outbound MDB simply listens for messages from the same JMS queue. When it ge
   {{{
   asadmin> create-jms-resource --restype javax.jms.Queue jms/xmpp/messagequeue
   }}}
+  # Deploy the Enterprise Application (located in './app/target/')
+  {{{
+  asadmin> deploy grapevineim-xmpp-app-1.0.ear
+  }}}
 
 [Installation Back to Top of Page]
 ----
