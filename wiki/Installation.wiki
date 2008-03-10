@@ -172,7 +172,9 @@ LDR5010: All ejb(s) of [grapevineim-xmpp-app-1.0] loaded successfully!|#]
 
 === Step 6 Test the Installation ===
 
-TODO
+In order to test your installation, you'll need a IM client like [http://pidgin.im pidgin] as well as an IM account with an XMPP messaging service like [http://www.google.com/talk Google Talk]. I'm actually using [http://www.google.com/apps/business/index.html Google Apps] for grapevine.im, so with some DNS magic for the grapevine.im domain entries, I am able to use 'alex' at 'grapevine.im'. 
+
+TODO continue
 
 [Installation Back to Top of Page]
 ----
