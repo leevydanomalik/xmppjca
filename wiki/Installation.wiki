@@ -163,7 +163,7 @@ The outbound MDB simply listens for messages from the same JMS queue. When it ge
   }}}
 Once your application has been deployed, you should see a message that resembles the following message in your !GlassFish server logs
   {{{
-[#|2008-03-09T20:24:40.671-0400|INFO|sun-appserver9.1|javax.enterprise.system.core.classloading|_ThreadID=17;_ThreadName=httpWorkerThread-4848-1;grapevineim-xmpp-app-1.0;|LDR5010: All ejb(s) of [grapevineim-xmpp-app-1.0] loaded successfully!|#]
+LDR5010: All ejb(s) of [grapevineim-xmpp-app-1.0] loaded successfully!|#]
   }}}
 
 [Installation Back to Top of Page]
