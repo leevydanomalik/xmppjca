@@ -24,8 +24,6 @@ To work with XMPPJCA, you will need to build and deploy both the resource adapte
   * [Installation#Step_5_Deploy_the_Enterprise_Application Step 5 Deploy the Enterprise Application]
   * [Installation#Step_6_Test_the_Installation Step 6 Test the Installation]
 
-  [Installation#References Other links and references] 
-
 ----
 
 === Step 1 Checkout the source code ===
