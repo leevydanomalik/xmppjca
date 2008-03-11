@@ -172,7 +172,7 @@ LDR5010: All ejb(s) of [grapevineim-xmpp-app-1.0] loaded successfully!|#]
 
 === Step 6 Test the Installation ===
 
-In order to test your installation, you'll need a IM client like the Google Talk IM client or [http://pidgin.im pidgin] and an IM account with a service provider that supports Jabber / XMPP. I'll be using [http://www.google.com/talk Google Talk] as my service provider. Google Talk actually integrates nicely with [http://www.google.com/apps/business/index.html Google Apps] which I am using for my [http://www.grapevine.im grapevine.im] domain. Note that I had to [http://rutger.heijmerikx.nl/2007/6/26/google-talk-for-google-apps-srv-records set DNS SRV records to make Google Talk work with Google Apps].
+In order to test your installation, you'll need a IM client like the Google Talk IM client or [http://pidgin.im pidgin] and an IM account with a service provider that supports Jabber / XMPP. I'll be using [http://www.google.com/talk Google Talk] as my service provider. Google Talk actually integrates with [http://www.google.com/apps/business/index.html Google Apps] which I am using for my [http://www.grapevine.im grapevine.im] domain, however I had to [http://rutger.heijmerikx.nl/2007/6/26/google-talk-for-google-apps-srv-records set DNS SRV records for my domain to make Google Talk work with Google Apps].
 
 In this test case, I'll connect my app to Google Talk as 'alex at grapevine.im'. I'll be able to chat with my app using any other Google Talk account (and hopefully other services who are [http://code.google.com/apis/talk/open_communications.html federated] with Google Talk). 
 
