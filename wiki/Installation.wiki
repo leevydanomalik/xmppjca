@@ -208,7 +208,12 @@ http://xmppjca.googlecode.com/files/xmppjca-project-properties.png
 
 You should notice new log messages in your !GlassFish logs as shown below.
   {{{
-LDR5010: All ejb(s) of [grapevineim-xmpp-app-1.0] loaded successfully!|#]
+  <MDB> ---- Inbound MDB got a message: hi there how are you today?|#]
+  <MDB> In XmppOutboundMDB.XmppMessageBean()|#]
+  <MDB> In XmppOutboundMDB.setMessageDrivenContext()|#]
+  <MDB> In XmppOutboundMDB.ejbCreate()|#]
+  <MDB> ---- Outbound MDB got a message:  com.sun.messaging.jms.ra.DirectObjectPacket@5e33d4|#]
+  sendMessage(XmppMessage)|#]
   }}}
 
 That's it! Hopefully, the installation worked well for you, but if you have any trouble, please feel free to contact me through by [Support support] page.
