@@ -190,21 +190,17 @@ I'll add a new buddy as shown in Figures 10 and 11 below.
 
 * Figure 10: Add a new buddy *
 
-http://xmppjca.googlecode.com/files/xmppjca-project-properties.png
+http://xmppjca.googlecode.com/files/xmppjca-im-add-buddy.png
 
 * Figure 11: Receive welcome message *
 
-http://xmppjca.googlecode.com/files/xmppjca-project-properties.png
+http://xmppjca.googlecode.com/files/xmppjca-im-welcome-msg.png
 
-Then, I will send a message to my app, and receive the messages shown in Figure 12, and 13.
+Then, I will send a message to my app and receive the messages shown in Figure 12.
 
-* Figure 12: Send a message *
+* Figure 12: Send a message and receive a response (string reversed) *
 
-http://xmppjca.googlecode.com/files/xmppjca-project-properties.png
-
-* Figure 13: Receive a response (string reversed) *
-
-http://xmppjca.googlecode.com/files/xmppjca-project-properties.png
+http://xmppjca.googlecode.com/files/xmppjca-im-reverse-strings.png
 
 You should notice new log messages in your !GlassFish logs as shown below.
   {{{
