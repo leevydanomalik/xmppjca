@@ -211,3 +211,4 @@ That's it! Hopefully, the installation worked well for you, but if you have any 
 For further information, your can refer to these links:
 
   * [http://developers.sun.com/appserver/reference/techart/as8_connectors/ Getting Started with Connectors in Sun Java System Application Server Platform Edition 8.0]
+  * [http://googletalk.blogspot.com/2006/01/xmpp-federation.html Google Talk Federates with Jabber Servers]
