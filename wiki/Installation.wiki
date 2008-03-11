@@ -172,23 +172,31 @@ LDR5010: All ejb(s) of [grapevineim-xmpp-app-1.0] loaded successfully!|#]
 
 === Step 6 Test the Installation ===
 
-In order to test your installation, you'll need a IM client like [http://pidgin.im pidgin] and an IM account with a service provider that supports Jabber / XMPP. I'll be using [http://www.google.com/talk Google Talk] as my service provider. Google Talk actually integrates nicely with [http://www.google.com/apps/business/index.html Google Apps] which I am using for my [http://www.grapevine.im grapevine.im] domain. 
+In order to test your installation, you'll need a IM client like the Google Talk IM client or [http://pidgin.im pidgin] and an IM account with a service provider that supports Jabber / XMPP. I'll be using [http://www.google.com/talk Google Talk] as my service provider. Google Talk actually integrates nicely with [http://www.google.com/apps/business/index.html Google Apps] which I am using for my [http://www.grapevine.im grapevine.im] domain. 
 
 In this test case, I'll connect my app to Google Talk as 'alex at grapevine.im'. I'll be able to chat with my app using any other Google Talk account (and hopefully other services who are federated with Google Talk). 
 
 I'll add a new buddy as shown in Figures 10 and 11 below.
 
+* Figure 10: Add a new buddy *
+
 http://xmppjca.googlecode.com/files/xmppjca-project-properties.png
+
+* Figure 11: Receive welcome message *
 
 http://xmppjca.googlecode.com/files/xmppjca-project-properties.png
 
 Then, I will send a message to my app, and receive the messages shown in Figure 12, and 13.
 
-http://xmppjca.googlecode.com/files/xmppjca-project-properties.png
+* Figure 12: Send a message *
 
 http://xmppjca.googlecode.com/files/xmppjca-project-properties.png
 
-You should notice new log messages in your GlassFish logs as shown below.
+* Figure 13: Receive a response (string reversed) *
+
+http://xmppjca.googlecode.com/files/xmppjca-project-properties.png
+
+You should notice new log messages in your !GlassFish logs as shown below.
   {{{
 LDR5010: All ejb(s) of [grapevineim-xmpp-app-1.0] loaded successfully!|#]
   }}}
