@@ -4,13 +4,14 @@ import java.io.Serializable;
 
 import javax.resource.cci.ConnectionSpec;
 
-public class XmppConnectionSpec implements ConnectionSpec, Serializable {
-	private static final long serialVersionUID = -1;
-	private String host = "";
-	private Integer port = Integer.valueOf(0);
-	private String domain = "";
-	private String username = "";
-	private String password = "";
+public abstract class XmppConnectionSpec implements ConnectionSpec,
+		Serializable {
+
+	private String host;
+	private Integer port;
+	private String domain;
+	private String username;
+	private String password;
 
 	public XmppConnectionSpec() {
 	}
@@ -59,23 +60,12 @@ public class XmppConnectionSpec implements ConnectionSpec, Serializable {
 		if (o != null) {
 			if (o instanceof XmppConnectionSpec) {
 				XmppConnectionSpec other = (XmppConnectionSpec) o;
-				if (isEqual(this.username, other.getUsername())
-						&& isEqual(this.host, other.getHost())
-						&& isEqual(this.port, other.getPort())
-						&& isEqual(this.domain, other.getDomain())) {
-					return true;
-				}
+				return (   username.equals(other.username)
+						&& host.equals(other.host) 
+						&& port.equals(other.port) 
+						&& domain.equals(other.domain)
+					   );
 			}
-		}
-		return false;
-	}
-
-	private boolean isEqual(Object s, Object t) {
-		if (s == t) {
-			return true;
-		}
-		if (s != null) {
-			return s.equals(t);
 		}
 		return false;
 	}
@@ -97,5 +87,4 @@ public class XmppConnectionSpec implements ConnectionSpec, Serializable {
 		buffer.append(domain);
 		return buffer.toString();
 	}
-
 }

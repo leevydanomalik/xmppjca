@@ -1,36 +1,53 @@
 package com.grapevineim.xmpp.ra.outbound;
 
+import java.io.Serializable;
+
 import javax.resource.ResourceException;
 import javax.resource.cci.ConnectionMetaData;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /**
  * This class provides information about an EIS instance connected through a
  * Connection instance.
  */
 
-public class XmppConnectionMetaData implements ConnectionMetaData {
+public class XmppConnectionMetaData implements ConnectionMetaData, Serializable {
 
-	private final XmppConnectionImpl conn;
+	private static final long serialVersionUID = -1;
+	private String userName = "undefined";
+	private String EISProductName = "undefined";
+	private String EISProductVersion = "undefined";
 
-	private static final Log LOG = LogFactory
-			.getLog(XmppConnectionMetaData.class);
+	public XmppConnectionMetaData() {
+	}
 
-	public XmppConnectionMetaData(XmppConnectionImpl conn) {
-		this.conn = conn;
+	public XmppConnectionMetaData(String userName, String EISProductName,
+			String EISProductVersion) {
+		this.userName = userName;
+		this.EISProductName = EISProductName;
+		this.EISProductVersion = EISProductVersion;
 	}
 
 	public String getEISProductName() throws ResourceException {
-		return "XMPP Connector";
+		return EISProductName;
 	}
 
 	public String getEISProductVersion() {
-		return "1.0";
+		return EISProductVersion;
 	}
 
 	public String getUserName() {
-		return conn.getUser();
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public void setEISProductName(String EISProductName) {
+		this.EISProductName = EISProductName;
+	}
+
+	public void setEISProductVersion(String EISProductVersion) {
+		this.EISProductVersion = EISProductVersion;
 	}
 }
