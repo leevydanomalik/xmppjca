@@ -62,7 +62,7 @@ public class XmppManagedConnectionFactory implements ManagedConnectionFactory,
 				return conn;
 			}
 		}
-		LOG.debug("matchManagedConnections --> NOT MATCHED");
+		LOG.warn("matchManagedConnections --> NOT MATCHED --> " + cxRequestInfo.toString());
 		return null;
 	}
 
