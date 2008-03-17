@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sun-ejb-jar PUBLIC "-//Sun Microsystems, Inc.//DTD Application Server 9.0 EJB 3.0//EN" "http://www.sun.com/software/appserver/dtds/sun-ejb-jar_3_0-0.dtd">
+<sun-ejb-jar>
+	<enterprise-beans>
+		<name>XmppInboundMDB</name>
+		<ejb>
+			<ejb-name>XmppInboundMDB</ejb-name>
+			<jndi-name>jms/xmpp/messagequeue</jndi-name>
+			<resource-ref>
+				<res-ref-name>ra/XmppMessagingConnector</res-ref-name>
+				<jndi-name>eis/ra/XmppMessagingConnector</jndi-name>
+			</resource-ref>
+			<mdb-connection-factory>
+				<jndi-name>jms/connectionFactory</jndi-name>
+			</mdb-connection-factory>
+			<mdb-resource-adapter>
+				<resource-adapter-mid>
+					@RESOURCE_ADAPTER_MID@
+				</resource-adapter-mid>
+				<activation-config>
+					<activation-config-property>
+						<activation-config-property-name>
+							host
+						</activation-config-property-name>
+						<activation-config-property-value>
+							@XMPP_HOST@
+						</activation-config-property-value>
+					</activation-config-property>
+					<activation-config-property>
+						<activation-config-property-name>
+							port
+						</activation-config-property-name>
+						<activation-config-property-value>
+							@XMPP_PORT@
+						</activation-config-property-value>
+					</activation-config-property>
+					<activation-config-property>
+						<activation-config-property-name>
+							domain
+						</activation-config-property-name>
+						<activation-config-property-value>
+							@XMPP_DOMAIN@
+						</activation-config-property-value>
+					</activation-config-property>
+					<activation-config-property>
+						<activation-config-property-name>
+							username
+						</activation-config-property-name>
+						<activation-config-property-value>
+							@XMPP_USERNAME@
+						</activation-config-property-value>
+					</activation-config-property>
+					<activation-config-property>
+						<activation-config-property-name>
+							password
+						</activation-config-property-name>
+						<activation-config-property-value>
+							@XMPP_PASSWORD@
+						</activation-config-property-value>
+					</activation-config-property>
+				</activation-config>
+			</mdb-resource-adapter>
+		</ejb>
+	</enterprise-beans>
+</sun-ejb-jar>
+
+

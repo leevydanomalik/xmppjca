@@ -1,0 +1,71 @@
+<project name="grapevineim-xmpp-inbound-mdb" default="dist" basedir=".">
+
+	<import file="../dependencies.xml" />
+
+	<description>
+        XmppMessaging Inbound MDB for GrapevineIM.com
+    </description>
+
+	<property name="src" location="./src/main/java" />
+	<property name="src.resources" location="./src/main/resources" />
+	<property name="build" location="./target/classes" />
+	<property name="build.resources" location="./target/resources" />
+	<property name="dist" location="./target" />
+
+	<target name="init">
+		<mkdir dir="${build}" />
+	</target>
+
+	<target name="compile" depends="init" description="compile the source ">
+		<javac srcdir="${src}" destdir="${build}" debug="true">
+			<classpath path="${project.j2ee.home}/lib/javaee.jar" />
+			<classpath path="${project.home}/lib/commons-lang-2.3.jar" />
+			<classpath path="${project.home}/lib/commons-logging-1.1.1.jar" />
+			<classpath path="${project.home}/api/target/grapevineim-xmpp-api-${project.version}.jar" />
+		</javac>
+	</target>
+
+	<target name="copy-and-replace-tokens">
+		<mkdir dir="${build.resources}" />
+		<copy overwrite="true" todir="${build.resources}">
+			<fileset dir="${src.resources}">
+				<include name="**/*.xml" />
+			</fileset>
+		</copy>
+		<replace dir="${build.resources}" token="@RESOURCE_ADAPTER_MID@" value="grapevineim-xmpp-connector-${project.version}">
+			<include name="**/*.xml" />
+		</replace>
+		<replace dir="${build.resources}" token="@XMPP_HOST@" value="${project.xmpp.host}">
+			<include name="**/*.xml" />
+		</replace>
+		<replace dir="${build.resources}" token="@XMPP_PORT@" value="${project.xmpp.port}">
+			<include name="**/*.xml" />
+		</replace>
+		<replace dir="${build.resources}" token="@XMPP_DOMAIN@" value="${project.xmpp.domain}">
+			<include name="**/*.xml" />
+		</replace>
+		<replace dir="${build.resources}" token="@XMPP_USERNAME@" value="${project.xmpp.username}">
+			<include name="**/*.xml" />
+		</replace>
+		<replace dir="${build.resources}" token="@XMPP_PASSWORD@" value="${project.xmpp.password}">
+			<include name="**/*.xml" />
+		</replace>
+	</target>
+
+	<target name="jar" depends="compile,copy-and-replace-tokens">
+		<mkdir dir="${dist}" />
+		<jar jarfile="${dist}/${ant.project.name}-${project.version}.jar" basedir="${build}">
+			<fileset dir="${build.resources}">
+				<include name="**/*.xml" />
+			</fileset>
+		</jar>
+	</target>
+
+	<target name="dist" depends="jar" description="generate the distribution" />
+
+	<target name="clean" description="clean up">
+		<delete dir="${build}" />
+		<delete dir="${dist}" />
+	</target>
+</project>
+
