@@ -37,11 +37,12 @@ import com.grapevineim.xmpp.XmppMessageListener;
 
 public class XmppConnectionImpl implements XmppConnection, ConnectionListener {
 
-	private final XmppConnectionRequestInfo connectionRequestInfo;
 	private final ManagedConnection managedConnection;
 	private final XMPPConnection connection;
 	private final Set<XmppMessageListener> messageListeners;
 	private final Set<ConnectionEventListener> connectionEventListeners;
+	private final String PRESENCE_MESSAGE = "Type 'help' for a list of commands"; 
+	private final String PRESENCE_STATUS = "available";
 
 	private static final Log LOG = LogFactory.getLog(XmppConnectionImpl.class);
 
@@ -49,21 +50,18 @@ public class XmppConnectionImpl implements XmppConnection, ConnectionListener {
 			XmppConnectionRequestInfo connectionRequestInfo)
 			throws ResourceException {
 		LOG.info("Constructor");
-		this.connectionRequestInfo = connectionRequestInfo;
 		this.messageListeners = new HashSet<XmppMessageListener>();
 		this.connectionEventListeners = new HashSet<ConnectionEventListener>();
 		this.managedConnection = managedConnection;
-		this.connection = connect(this.connectionRequestInfo);
+		this.connection = connect(connectionRequestInfo);
 		addMessagePacketListener(this.connection, new MessagePacketProcessor(
-				this.connectionRequestInfo), this.connectionRequestInfo
-				.getUsername());
-		addPresencePacketListener(this.connection, new PresencePacketProcessor(
-				this.connectionRequestInfo), this.connectionRequestInfo
-				.getUsername());
-		login(this.connection, this.connectionRequestInfo.getUsername(),
-				this.connectionRequestInfo.getPassword());
-		setPresence(this.connection, "available",
-				"Type 'help' for a list of commands");
+				connectionRequestInfo), connectionRequestInfo.getUsername());
+		addPresencePacketListener(this.connection,
+				new PresencePacketProcessor(), connectionRequestInfo
+						.getUsername());
+		login(this.connection, connectionRequestInfo.getUsername(),
+				connectionRequestInfo.getPassword());
+		setPresence(this.connection, PRESENCE_STATUS, PRESENCE_MESSAGE);
 		acceptSubscriptionsManually(this.connection);
 	}
 
@@ -103,7 +101,8 @@ public class XmppConnectionImpl implements XmppConnection, ConnectionListener {
 		}
 	}
 
-	private void sendMessage(String to, String message) throws ResourceException {
+	private void sendMessage(String to, String message)
+			throws ResourceException {
 		LOG.info("sendMessage(String, String)");
 		try {
 			ChatManager chatManager = connection.getChatManager();
@@ -234,19 +233,6 @@ public class XmppConnectionImpl implements XmppConnection, ConnectionListener {
 		}
 	}
 
-	public boolean equals(Object obj) {
-		if (obj instanceof XmppConnectionImpl) {
-			XmppConnectionImpl other = (XmppConnectionImpl) obj;
-			return this.connectionRequestInfo
-					.equals(other.connectionRequestInfo);
-		}
-		return false;
-	}
-
-	public int hashCode() {
-		return this.connectionRequestInfo.hashCode();
-	}
-
 	public void connectionClosed() {
 		LOG.debug("connectionClosed()");
 		ConnectionEvent ce = new ConnectionEvent(this.managedConnection,
@@ -312,14 +298,13 @@ public class XmppConnectionImpl implements XmppConnection, ConnectionListener {
 			}
 		}
 	}
-	
+
 	private void addRosterEntry(String jid) {
 		try {
 			Roster roster = this.connection.getRoster();
 			roster.createEntry(jid, jid, null);
 			sendMessage(jid, "Welcome!");
-		}
-		catch(Exception e) {
+		} catch (Exception e) {
 			LOG.error("Could not create roster entry for " + jid, e);
 		}
 	}
@@ -328,15 +313,14 @@ public class XmppConnectionImpl implements XmppConnection, ConnectionListener {
 		try {
 			Roster roster = this.connection.getRoster();
 			RosterEntry entry = roster.getEntry(jid);
-			if(entry != null) {
+			if (entry != null) {
 				roster.removeEntry(entry);
 			}
-		}
-		catch(Exception e) {
+		} catch (Exception e) {
 			LOG.error("Could not remove roster entry for " + jid, e);
-		}		
+		}
 	}
-	
+
 	class MessagePacketProcessor implements PacketListener {
 
 		private final XmppConnectionRequestInfo connectionRequestInfo;
@@ -372,15 +356,11 @@ public class XmppConnectionImpl implements XmppConnection, ConnectionListener {
 				LOG.error("Could not process packet received", e);
 			}
 		}
-	}	
+	}
 
 	class PresencePacketProcessor implements PacketListener {
 
-		private final XmppConnectionRequestInfo connectionRequestInfo;
-
-		public PresencePacketProcessor(
-				XmppConnectionRequestInfo connectionRequestInfo) {
-			this.connectionRequestInfo = connectionRequestInfo;
+		public PresencePacketProcessor() {
 		}
 
 		public void processPacket(Packet packet) {
@@ -388,10 +368,10 @@ public class XmppConnectionImpl implements XmppConnection, ConnectionListener {
 				if (packet instanceof Presence) {
 					Presence presence = (Presence) packet;
 					LOG.debug("Received presence packet: " + presence);
-					if(Presence.Type.subscribe.equals(presence.getType())) {
+					if (Presence.Type.subscribe.equals(presence.getType())) {
 						addRosterEntry(presence.getFrom());
-					}
-					else if (Presence.Type.unsubscribe.equals(presence.getType())) {
+					} else if (Presence.Type.unsubscribe.equals(presence
+							.getType())) {
 						removeRosterEntry(presence.getFrom());
 					}
 				}
@@ -400,5 +380,4 @@ public class XmppConnectionImpl implements XmppConnection, ConnectionListener {
 			}
 		}
 	}
-
 }
