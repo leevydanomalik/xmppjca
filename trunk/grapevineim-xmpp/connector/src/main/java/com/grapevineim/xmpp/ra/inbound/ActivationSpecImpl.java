@@ -1,7 +1,5 @@
 package com.grapevineim.xmpp.ra.inbound;
 
-import java.io.Serializable;
-
 import javax.resource.ResourceException;
 import javax.resource.spi.ActivationSpec;
 import javax.resource.spi.InvalidPropertyException;
@@ -13,10 +11,11 @@ import org.apache.commons.logging.LogFactory;
 
 import com.grapevineim.xmpp.XmppConnectionSpec;
 
-public class ActivationSpecImpl extends XmppConnectionSpec implements ActivationSpec, Serializable {
+public class ActivationSpecImpl extends XmppConnectionSpec implements ActivationSpec {
+	
+	private static final long serialVersionUID = -1;
 	
 	private static final Log LOG = LogFactory.getLog(ActivationSpecImpl.class);
-	private static final long serialVersionUID = -1;
 
 	private ResourceAdapter resourceAdapter = null;
 

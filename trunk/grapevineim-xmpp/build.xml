@@ -16,7 +16,7 @@
  and limitations under the License. 
 
 -->
-<project name="grapevineim-xmpp-build" default="app" basedir=".">
+<project name="grapevineim-xmpp-build" default="dist" basedir=".">
 	<description>
         Main build file for GrapevineIM.com XmppMessaging
     </description>
@@ -45,7 +45,7 @@
 		<ant antfile="${outbound.proj.dir}/build.xml" dir="${outbound.proj.dir}" />
 	</target>
 
-	<target name="app" depends="clean-app,inbound,outbound">
+	<target name="app" depends="inbound,outbound">
 		<ant antfile="${app.proj.dir}/build.xml" dir="${app.proj.dir}" />
 	</target>
 
@@ -55,8 +55,14 @@
 		<ant antfile="${outbound.proj.dir}/build.xml" dir="${outbound.proj.dir}" target="clean" />
 	</target>
 
-	<target name="clean-all" depends="clean-app">
+	<target name="clean-connector">
 		<ant antfile="${connector.proj.dir}/build.xml" dir="${connector.proj.dir}" target="clean" />
 	</target>
+
+	<target name="clean-all" depends="clean-app,clean-connector">
+		<ant antfile="${connector.proj.dir}/build.xml" dir="${connector.proj.dir}" target="clean" />
+	</target>
+
+	<target name="dist" depends="connector,app" />
 
 </project>
