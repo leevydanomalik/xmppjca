@@ -22,6 +22,8 @@
     </description>
 
 	<import file="./dependencies.xml" />
+	
+	<property environment="env"/>
 
 	<property name="connector.proj.dir" location="./connector" />
 	<property name="app.proj.dir" location="./app" />
@@ -29,7 +31,47 @@
 	<property name="inbound.proj.dir" location="./inbound" />
 	<property name="outbound.proj.dir" location="./outbound" />
 
-	<target name="api">
+	<target name="check-project-properties">
+		<condition property="project-properties-exists">
+			<available file="project.properties" type="file" />
+		</condition>
+	</target>
+
+	<target name="autogen-project-properties" depends="check-project-properties" unless="project-properties-exists">
+		<echo level="error" message="Auto-generating 'project.properties' file"/>
+		<echo level="error" message="WARNING: You must update domain, username, and password."/>		
+		<echo level="error" file="project.properties" append="false" >
+# fully qualified path to your project files
+project.home=${basedir}
+
+# fully qualified path to your glassfish installation
+project.j2ee.home=${env.GLASSFISH_HOME}
+
+# project version ID
+project.version=1.0
+
+# XMPP server hostname
+project.xmpp.host=talk.google.com
+
+# XMPP server port
+project.xmpp.port=5222
+
+# XMPP server domain name for user account
+project.xmpp.domain=gmail.com
+
+# XMPP login username
+project.xmpp.username=ENTER_YOUR_USERNAME_HERE
+
+# XMPP login password
+project.xmpp.password=ENTER_YOUR_PASSWORD_HERE			
+		</echo>
+	</target>
+
+	<target name="init" depends="autogen-project-properties">
+
+	</target>
+
+	<target name="api" depends="init">
 		<ant antfile="${api.proj.dir}/build.xml" dir="${api.proj.dir}" />
 	</target>
 
