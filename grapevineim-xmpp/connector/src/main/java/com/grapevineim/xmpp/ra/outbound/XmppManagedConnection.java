@@ -33,23 +33,26 @@ public class XmppManagedConnection implements ManagedConnection {
 		this.subject = subject;
 		this.connectionRequestInfo = connectionRequestInfo;
 		this.metaData = new XmppManagedConnectionMetaData(this);
+		this.connection = (XmppConnectionImpl) getConnection(subject, connectionRequestInfo);
 	}
 
 	public Object getConnection(Subject subject,
 			ConnectionRequestInfo connectionRequestInfo)
 			throws ResourceException {
 		LOG.debug("getConnection()");
-		try {
-			this.connection = new XmppConnectionImpl(this,
-					(XmppConnectionRequestInfo) connectionRequestInfo);
-		} catch (Exception e) {
-			LOG.error("Could not create XmppConnectionImpl", e);
-			throw new ResourceException("Could not create XmppConnectionImpl",
-					e.getMessage());
+		if (this.connection == null) {
+			try {
+				this.connection = new XmppConnectionImpl(this,
+						(XmppConnectionRequestInfo) connectionRequestInfo);
+			} catch (Exception e) {
+				LOG.error("Could not create XmppConnectionImpl", e);
+				throw new ResourceException(
+						"Could not create XmppConnectionImpl", e.getMessage());
+			}
 		}
 		return this.connection;
 	}
-	
+
 	public boolean isValid() {
 		return this.connection.isValid();
 	}
@@ -65,13 +68,7 @@ public class XmppManagedConnection implements ManagedConnection {
 
 	public void associateConnection(Object connection) throws ResourceException {
 		LOG.debug("associateConnection(Object)");
-		if (connection instanceof XmppConnectionImpl) {
-			XmppConnectionImpl xmppConnection = (XmppConnectionImpl) connection;
-			this.connection = xmppConnection;
-		} else {
-			throw new ResourceException(
-					"Connection is not of the expected type");
-		}
+		throw new NotSupportedException("associateConnection() not supported");
 	}
 
 	public void addConnectionEventListener(ConnectionEventListener listener) {
