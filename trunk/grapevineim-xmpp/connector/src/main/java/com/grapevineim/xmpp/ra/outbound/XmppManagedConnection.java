@@ -15,14 +15,12 @@ import javax.transaction.xa.XAResource;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.grapevineim.xmpp.XmppConnection;
-
 public class XmppManagedConnection implements ManagedConnection {
 	private final XmppManagedConnectionFactory mcf;
-	private XmppConnection connection;
 	private final ConnectionRequestInfo connectionRequestInfo;
 	private final ManagedConnectionMetaData metaData;
 	private final Subject subject;
+	private XmppConnectionImpl connection;
 	private PrintWriter out;
 
 	private static final Log LOG = LogFactory
@@ -40,45 +38,35 @@ public class XmppManagedConnection implements ManagedConnection {
 	public Object getConnection(Subject subject,
 			ConnectionRequestInfo connectionRequestInfo)
 			throws ResourceException {
-		LOG.debug("getConnection(Subject, ConnectionRequestInfo)");
+		LOG.debug("getConnection()");
 		try {
-			if (this.connection == null) {
-				this.connection = new XmppConnectionImpl(this,
-						(XmppConnectionRequestInfo) connectionRequestInfo);
-			}
-			return this.connection;
+			this.connection = new XmppConnectionImpl(this,
+					(XmppConnectionRequestInfo) connectionRequestInfo);
 		} catch (Exception e) {
 			LOG.error("Could not create XmppConnectionImpl", e);
-			throw new ResourceException(e.getMessage());
+			throw new ResourceException("Could not create XmppConnectionImpl",
+					e.getMessage());
 		}
+		return this.connection;
 	}
-		
+	
+	public boolean isValid() {
+		return this.connection.isValid();
+	}
+
 	public void destroy() throws ResourceException {
 		LOG.debug("destroy()");
-		closeConnection();
 	}
 
 	public void cleanup() throws ResourceException {
 		LOG.debug("cleanup()");
-		closeConnection();
-	}
-
-	private void closeConnection() {
-		LOG.debug("closeConnection()");
-		if (this.connection != null) {
-			try {
-				connection.close();
-			} catch (Exception e) {
-				LOG.error("Could not close connection", e);
-			}
-			this.connection = null;
-		}
+		this.connection = null;
 	}
 
 	public void associateConnection(Object connection) throws ResourceException {
 		LOG.debug("associateConnection(Object)");
-		if (connection instanceof XmppConnection) {
-			XmppConnection xmppConnection = (XmppConnection) connection;
+		if (connection instanceof XmppConnectionImpl) {
+			XmppConnectionImpl xmppConnection = (XmppConnectionImpl) connection;
 			this.connection = xmppConnection;
 		} else {
 			throw new ResourceException(
@@ -89,8 +77,7 @@ public class XmppManagedConnection implements ManagedConnection {
 	public void addConnectionEventListener(ConnectionEventListener listener) {
 		LOG.debug("addConnectionEventListener(ConnectionEventListener)");
 		try {
-			((XmppConnectionImpl) this.connection)
-					.addConnectionEventListener(listener);
+			this.connection.addConnectionEventListener(listener);
 		} catch (Exception e) {
 			LOG.error("Could not add connection event listener", e);
 		}
@@ -99,8 +86,7 @@ public class XmppManagedConnection implements ManagedConnection {
 	public void removeConnectionEventListener(ConnectionEventListener listener) {
 		LOG.debug("removeConnectionEventListener(ConnectionEventListener)");
 		try {
-			((XmppConnectionImpl) this.connection)
-					.removeConnectionEventListener(listener);
+			this.connection.removeConnectionEventListener(listener);
 		} catch (Exception e) {
 			LOG.error("Could not add connection event listener", e);
 		}
@@ -131,7 +117,7 @@ public class XmppManagedConnection implements ManagedConnection {
 	}
 
 	public Subject getSubject() {
-		return subject;
+		return this.subject;
 	}
 
 	public ConnectionRequestInfo getConnectionRequestInfo() {

@@ -38,11 +38,11 @@ import com.grapevineim.xmpp.XmppMessageListener;
 public class XmppConnectionImpl implements XmppConnection, ConnectionListener {
 
 	private final ManagedConnection managedConnection;
-	private final XMPPConnection connection;
 	private final Set<XmppMessageListener> messageListeners;
 	private final Set<ConnectionEventListener> connectionEventListeners;
-	private final String PRESENCE_MESSAGE = "Type 'help' for a list of commands"; 
+	private final String PRESENCE_MESSAGE = "Type 'help' for a list of commands";
 	private final String PRESENCE_STATUS = "available";
+	private final XMPPConnection connection;
 
 	private static final Log LOG = LogFactory.getLog(XmppConnectionImpl.class);
 
@@ -53,18 +53,13 @@ public class XmppConnectionImpl implements XmppConnection, ConnectionListener {
 		this.messageListeners = new HashSet<XmppMessageListener>();
 		this.connectionEventListeners = new HashSet<ConnectionEventListener>();
 		this.managedConnection = managedConnection;
-		this.connection = connect(connectionRequestInfo);
-		addMessagePacketListener(this.connection, new MessagePacketProcessor(
-				connectionRequestInfo), connectionRequestInfo.getUsername());
-		addPresencePacketListener(this.connection,
-				new PresencePacketProcessor(), connectionRequestInfo
-						.getUsername());
-		login(this.connection, connectionRequestInfo.getUsername(),
-				connectionRequestInfo.getPassword());
-		setPresence(this.connection, PRESENCE_STATUS, PRESENCE_MESSAGE);
-		acceptSubscriptionsManually(this.connection);
+		this.connection = connect(connectionRequestInfo);		
 	}
 
+	public boolean isValid() {
+		return this.connection.isConnected();
+	}
+	
 	private void acceptSubscriptionsManually(XMPPConnection conn)
 			throws ResourceException {
 		try {
@@ -111,7 +106,7 @@ public class XmppConnectionImpl implements XmppConnection, ConnectionListener {
 			Chat chat = chatManager.createChat(to, null);
 
 			// send the message
-			chat.sendMessage(message);
+			chat.sendMessage(message);			
 
 		} catch (Exception e) {
 			LOG.error("Could not sendMessage.", e);
@@ -119,23 +114,35 @@ public class XmppConnectionImpl implements XmppConnection, ConnectionListener {
 		}
 	}
 
-	public ManagedConnection getManagedConnection() {
-		return managedConnection;
-	}
-
-	private XMPPConnection connect(XmppConnectionRequestInfo info)
+	private XMPPConnection connect(XmppConnectionRequestInfo connectionRequestInfo)
 			throws ResourceException {
 
 		try {
-			ConnectionConfiguration config = new ConnectionConfiguration(info
-					.getHost(), info.getPort().intValue(), info.getDomain());
-
+			ConnectionConfiguration config = new ConnectionConfiguration(
+					connectionRequestInfo.getHost(), connectionRequestInfo
+							.getPort().intValue(), connectionRequestInfo
+							.getDomain());
 			XMPPConnection conn = new XMPPConnection(config);
 			conn.connect();
+			
+			addMessagePacketListener(conn,
+					new MessagePacketProcessor(connectionRequestInfo),
+					connectionRequestInfo.getUsername());
+			addPresencePacketListener(conn,
+					new PresencePacketProcessor(), connectionRequestInfo
+							.getUsername());
+
+			login(conn, connectionRequestInfo.getUsername(),
+					connectionRequestInfo.getPassword());
+
+			setPresence(conn, PRESENCE_STATUS, PRESENCE_MESSAGE);
+			acceptSubscriptionsManually(conn);
+			
 			return conn;
-		} catch (XMPPException xe) {
-			LOG.error("Could not connect.", xe);
-			throw new ResourceException("Could not connect", xe);
+
+		} catch (Exception e) {
+			LOG.error("Could not connect.", e);
+			throw new ResourceException("Could not connect", e);
 		}
 	}
 
@@ -165,7 +172,7 @@ public class XmppConnectionImpl implements XmppConnection, ConnectionListener {
 		}
 	}
 
-	public void login(XMPPConnection conn, String username, String password)
+	private void login(XMPPConnection conn, String username, String password)
 			throws ResourceException {
 		try {
 			conn.login(username, password);
@@ -175,7 +182,7 @@ public class XmppConnectionImpl implements XmppConnection, ConnectionListener {
 		}
 	}
 
-	public void setPresence(XMPPConnection conn, String type, String status)
+	private void setPresence(XMPPConnection conn, String type, String status)
 			throws ResourceException {
 		try {
 			// Create a new presence.
@@ -193,16 +200,12 @@ public class XmppConnectionImpl implements XmppConnection, ConnectionListener {
 		try {
 			if (this.connection.isConnected()) {
 				this.connection.disconnect(new Presence(
-						Presence.Type.unavailable));
+						Presence.Type.unavailable));				
 			}
 		} catch (Exception e) {
 			LOG.error("Could not disconnect", e);
 			throw new ResourceException("Could not disconnect", e);
 		}
-	}
-
-	public String getUser() {
-		return this.connection.getUser();
 	}
 
 	public void addMessageListener(XmppMessageListener listener)
@@ -234,17 +237,17 @@ public class XmppConnectionImpl implements XmppConnection, ConnectionListener {
 	}
 
 	public void connectionClosed() {
-		LOG.debug("connectionClosed()");
+		LOG.debug("connectionClosed()");	
 		ConnectionEvent ce = new ConnectionEvent(this.managedConnection,
-				ConnectionEvent.CONNECTION_CLOSED);
-		dispatchConnectionEvent(ce);
+				ConnectionEvent.CONNECTION_CLOSED);		
+		dispatchConnectionEvent(ce);			
 	}
 
 	public void connectionClosedOnError(Exception e) {
 		LOG.debug("connectionClosedOnError()");
 		ConnectionEvent ce = new ConnectionEvent(this.managedConnection,
 				ConnectionEvent.CONNECTION_ERROR_OCCURRED, e);
-		dispatchConnectionEvent(ce);
+		dispatchConnectionEvent(ce);	
 	}
 
 	public void reconnectingIn(int secs) {
