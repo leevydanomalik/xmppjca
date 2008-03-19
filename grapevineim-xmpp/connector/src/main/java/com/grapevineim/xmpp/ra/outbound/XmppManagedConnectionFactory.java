@@ -2,6 +2,7 @@ package com.grapevineim.xmpp.ra.outbound;
 
 import java.io.PrintWriter;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.resource.ResourceException;
@@ -9,12 +10,13 @@ import javax.resource.spi.ConnectionManager;
 import javax.resource.spi.ConnectionRequestInfo;
 import javax.resource.spi.ManagedConnection;
 import javax.resource.spi.ManagedConnectionFactory;
+import javax.resource.spi.ValidatingManagedConnectionFactory;
 import javax.security.auth.Subject;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-public class XmppManagedConnectionFactory implements ManagedConnectionFactory,
+public class XmppManagedConnectionFactory implements ManagedConnectionFactory, ValidatingManagedConnectionFactory,
 		Serializable {
 
 	private static final long serialVersionUID = -1;
@@ -64,6 +66,16 @@ public class XmppManagedConnectionFactory implements ManagedConnectionFactory,
 		}
 		LOG.debug("matchManagedConnections --> NOT MATCHED");
 		return null;
+	}
+	
+	public Set getInvalidConnections(Set connections) throws ResourceException {
+		Set<XmppManagedConnection> validatedConnections = new HashSet<XmppManagedConnection>();
+		for (XmppManagedConnection conn : (Set<XmppManagedConnection>) connections) {
+			if (conn.isValid()) {
+				validatedConnections.add(conn);
+			}
+		}
+		return validatedConnections;
 	}
 
 	public void setLogWriter(PrintWriter out) throws ResourceException {
