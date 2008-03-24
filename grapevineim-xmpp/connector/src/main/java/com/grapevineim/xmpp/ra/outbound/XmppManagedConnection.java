@@ -1,6 +1,7 @@
 package com.grapevineim.xmpp.ra.outbound;
 
 import java.io.PrintWriter;
+import java.security.Principal;
 
 import javax.resource.NotSupportedException;
 import javax.resource.ResourceException;
@@ -9,6 +10,7 @@ import javax.resource.spi.ConnectionRequestInfo;
 import javax.resource.spi.LocalTransaction;
 import javax.resource.spi.ManagedConnection;
 import javax.resource.spi.ManagedConnectionMetaData;
+import javax.resource.spi.ResourceAdapter;
 import javax.security.auth.Subject;
 import javax.transaction.xa.XAResource;
 
@@ -16,11 +18,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 public class XmppManagedConnection implements ManagedConnection {
-	private final XmppManagedConnectionFactory mcf;
-	private final ConnectionRequestInfo connectionRequestInfo;
 	private final ManagedConnectionMetaData metaData;
-	private final Subject subject;
-	private XmppConnectionImpl connection;
+	private final XmppConnectionImpl connection;
+	private final ConnectionRequestInfo connectionRequestInfo;
 	private PrintWriter out;
 
 	private static final Log LOG = LogFactory
@@ -29,32 +29,42 @@ public class XmppManagedConnection implements ManagedConnection {
 	public XmppManagedConnection(XmppManagedConnectionFactory mcf,
 			Subject subject, ConnectionRequestInfo connectionRequestInfo)
 			throws ResourceException {
-		this.mcf = mcf;
-		this.subject = subject;
+		this.metaData = new XmppManagedConnectionMetaData(getUserName(subject));
 		this.connectionRequestInfo = connectionRequestInfo;
-		this.metaData = new XmppManagedConnectionMetaData(this);
-		this.connection = (XmppConnectionImpl) getConnection(subject, connectionRequestInfo);
+		this.connection = getConnection(mcf.getResourceAdapter(),connectionRequestInfo);		
+	}
+	
+	private String getUserName(Subject subject) {
+		if( subject != null ) {
+			// return the first principal's name
+			for(Principal principal : subject.getPrincipals()) {
+				return principal.getName();
+			}
+		}
+		return "unknown";
 	}
 
 	public Object getConnection(Subject subject,
 			ConnectionRequestInfo connectionRequestInfo)
 			throws ResourceException {
 		LOG.debug("getConnection()");
-		if (this.connection == null) {
-			try {
-				this.connection = new XmppConnectionImpl(this,
-						(XmppConnectionRequestInfo) connectionRequestInfo);
-			} catch (Exception e) {
-				LOG.error("Could not create XmppConnectionImpl", e);
-				throw new ResourceException(
-						"Could not create XmppConnectionImpl", e.getMessage());
-			}
+		if(this.connectionRequestInfo.equals(connectionRequestInfo)) {
+			return this.connection;
 		}
-		return this.connection;
+		else {
+			throw new NotSupportedException("Getting a connection with a different connectionRequestInfo is not supported");
+		}
 	}
-
-	public boolean isValid() {
-		return this.connection.isValid();
+	
+	private XmppConnectionImpl getConnection(ResourceAdapter ra, ConnectionRequestInfo connectionRequestInfo) throws ResourceException {
+		try {
+			return new XmppConnectionImpl(ra, this,
+					(XmppConnectionRequestInfo) connectionRequestInfo);
+		} catch (Exception e) {
+			LOG.error("Could not create XmppConnectionImpl", e);
+			throw new ResourceException(
+					"Could not create XmppConnectionImpl", e.getMessage());
+		}
 	}
 
 	public void destroy() throws ResourceException {
@@ -63,7 +73,6 @@ public class XmppManagedConnection implements ManagedConnection {
 
 	public void cleanup() throws ResourceException {
 		LOG.debug("cleanup()");
-		this.connection = null;
 	}
 
 	public void associateConnection(Object connection) throws ResourceException {
@@ -74,7 +83,7 @@ public class XmppManagedConnection implements ManagedConnection {
 	public void addConnectionEventListener(ConnectionEventListener listener) {
 		LOG.debug("addConnectionEventListener(ConnectionEventListener)");
 		try {
-			this.connection.addConnectionEventListener(listener);
+			this.connection.addConnectionEventListener(listener);		
 		} catch (Exception e) {
 			LOG.error("Could not add connection event listener", e);
 		}
@@ -107,17 +116,5 @@ public class XmppManagedConnection implements ManagedConnection {
 
 	public PrintWriter getLogWriter() throws ResourceException {
 		return out;
-	}
-
-	public XmppManagedConnectionFactory getManagedConnectionFactory() {
-		return this.mcf;
-	}
-
-	public Subject getSubject() {
-		return this.subject;
-	}
-
-	public ConnectionRequestInfo getConnectionRequestInfo() {
-		return this.connectionRequestInfo;
-	}
+	}	
 }

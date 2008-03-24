@@ -13,22 +13,29 @@ import com.grapevineim.xmpp.XmppConnection;
 import com.grapevineim.xmpp.XmppConnectionFactory;
 import com.grapevineim.xmpp.XmppMessage;
 import com.grapevineim.xmpp.XmppMessageListener;
+import com.grapevineim.xmpp.ra.outbound.XmppConnectionImpl;
 import com.grapevineim.xmpp.ra.outbound.XmppConnectionRequestInfo;
 
-public class EndpointConsumer implements XmppMessageListener {
-	private static final Log LOG = LogFactory.getLog(EndpointConsumer.class);
+public class XmppMessageListenerImpl implements XmppMessageListener {
+	
+	private static final Log LOG = LogFactory.getLog(XmppMessageListenerImpl.class);
+	private static final String PRESENCE_STATUS_AVAILABLE ="available";
+	private static final String PRESENCE_STATUS_UNAVAILABLE = "unavailable";
+	private static final String INSTRUCTIONS = "Type 'help' for a list of commands";
 
 	private final MessageEndpointFactory messageEndpointFactory;
 	private final WorkManager workManager;
 	private final XmppConnection connection;
-
-	public EndpointConsumer(WorkManager workManager,
+	
+	public XmppMessageListenerImpl(WorkManager workManager,
 			MessageEndpointFactory messageEndpointFactory, ActivationSpecImpl as)
 			throws Exception {
 		this.workManager = workManager;
 		this.messageEndpointFactory = messageEndpointFactory;
-		this.connection = connect(as);
+		this.connection = getConnection(as);
+		this.connection.open();
 		this.connection.addMessageListener(this);
+		this.connection.setPresence(PRESENCE_STATUS_AVAILABLE, INSTRUCTIONS);
 	}
 
 	public void onMessage(XmppMessage xmppMessage) {
@@ -40,7 +47,13 @@ public class EndpointConsumer implements XmppMessageListener {
 		}
 	}
 
-	private XmppConnection connect(ActivationSpecImpl activationSpec)
+	/**
+	 * By connection in this fashion, it will consumer a ManagedConnection from the pool. This is what I want.
+	 * @param activationSpec
+	 * @return
+	 * @throws Exception
+	 */
+	private XmppConnection getConnection(ActivationSpecImpl activationSpec)
 			throws Exception {
 		try {
 			Context ctx = new InitialContext();
@@ -54,21 +67,20 @@ public class EndpointConsumer implements XmppMessageListener {
 			connectionRequestInfo.setDomain(activationSpec.getDomain());
 			return connectionFactory.createConnection(connectionRequestInfo);
 		} catch (Exception e) {
-			LOG.error("<MDB> Error", e);
-			throw e;
-		}
-	}
-
-	private void disconnect() throws Exception {
-		try {
-			connection.close();
-		} catch (Exception e) {
-			LOG.error("<MDB> Error", e);
+			LOG.error("Could not get connection", e);
 			throw e;
 		}
 	}
 
 	public void cleanup() throws Exception {
-		disconnect();
+		try {
+			this.connection.setPresence(PRESENCE_STATUS_UNAVAILABLE, "");
+			this.connection.removeMessageListener(this);		
+			this.connection.close();
+		}
+		catch(Exception e) {
+			LOG.error("Could not cleanup", e);
+			throw e;
+		}
 	}
 }

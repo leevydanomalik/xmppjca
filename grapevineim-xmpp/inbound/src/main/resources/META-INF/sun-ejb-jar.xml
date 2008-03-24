@@ -13,6 +13,10 @@
 			<mdb-connection-factory>
 				<jndi-name>jms/connectionFactory</jndi-name>
 			</mdb-connection-factory>
+			<bean-pool>
+				<steady-pool-size>1</steady-pool-size>
+				<max-pool-size>1</max-pool-size>
+			</bean-pool>
 			<mdb-resource-adapter>
 				<resource-adapter-mid>
 					@RESOURCE_ADAPTER_MID@

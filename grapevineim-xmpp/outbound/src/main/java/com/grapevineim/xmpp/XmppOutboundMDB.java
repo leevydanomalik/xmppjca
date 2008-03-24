@@ -66,6 +66,7 @@ public class XmppOutboundMDB implements MessageDrivenBean,
 			XmppConnectionFactory connectionFactory = (XmppConnectionFactory) ctx
 					.lookup("eis/ra/XmppMessagingConnector");
 			connection = connectionFactory.createConnection(m.getConnectionSpec());
+			connection.open();
 			connection.sendMessage(m);
 		} catch (Exception e) {
 			LOG.error("<MDB> Error", e);

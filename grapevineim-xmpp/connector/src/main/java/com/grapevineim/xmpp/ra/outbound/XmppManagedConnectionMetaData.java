@@ -15,17 +15,16 @@ import org.apache.commons.logging.LogFactory;
  */
 
 public class XmppManagedConnectionMetaData implements ManagedConnectionMetaData {
-	private final XmppManagedConnection mc;
+	private final String userName;
 
-	private final static Log LOG = LogFactory
-			.getLog(XmppManagedConnectionMetaData.class);
+	private final static Log LOG = LogFactory.getLog(XmppManagedConnectionMetaData.class);
 
-	public XmppManagedConnectionMetaData(XmppManagedConnection mc) {
-		this.mc = mc;
+	public XmppManagedConnectionMetaData(String userName) {
+		this.userName = userName;
 	}
 
 	public String getEISProductName() {
-		return "XMPP Connector";
+		return "XMPPConnector";
 	}
 
 	public String getEISProductVersion() {
@@ -36,13 +35,7 @@ public class XmppManagedConnectionMetaData implements ManagedConnectionMetaData 
 		return 0; // unlimited
 	}
 
-	public String getUserName() {
-		if( mc.getSubject() != null ) {
-			// return the first principal's name
-			for(Principal principal : mc.getSubject().getPrincipals()) {
-				return principal.getName();
-			}
-		}
-		return "unknown";
+	public String getUserName() {	
+		return userName;
 	}
 }
