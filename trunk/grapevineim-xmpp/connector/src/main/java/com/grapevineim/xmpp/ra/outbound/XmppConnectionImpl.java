@@ -7,6 +7,9 @@ import javax.resource.ResourceException;
 import javax.resource.spi.ConnectionEvent;
 import javax.resource.spi.ConnectionEventListener;
 import javax.resource.spi.ManagedConnection;
+import javax.resource.spi.ResourceAdapter;
+import javax.resource.spi.work.Work;
+import javax.resource.spi.work.WorkManager;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -29,37 +32,41 @@ import org.jivesoftware.smack.packet.Presence;
 import com.grapevineim.xmpp.XmppConnection;
 import com.grapevineim.xmpp.XmppMessage;
 import com.grapevineim.xmpp.XmppMessageListener;
+import com.grapevineim.xmpp.ra.ResourceAdapterImpl;
 
 /**
  * Application-level connection handle that is used by a client component to
  * access an EIS instance.
  */
 
-public class XmppConnectionImpl implements XmppConnection, ConnectionListener {
+public class XmppConnectionImpl implements XmppConnection {
 
-	private final ManagedConnection managedConnection;
 	private final Set<XmppMessageListener> messageListeners;
-	private final Set<ConnectionEventListener> connectionEventListeners;
-	private final String PRESENCE_MESSAGE = "Type 'help' for a list of commands";
-	private final String PRESENCE_STATUS = "available";
 	private final XMPPConnection connection;
+	private final ConnectionListenerImpl connectionListener;
+	private final XmppConnectionRequestInfo connectionRequestInfo;
+	private final MessagePacketProcessor messagePacketProcessor;
+	private final PresencePacketProcessor presencePacketProcessor;
+	private final WorkManager workManager;
 
 	private static final Log LOG = LogFactory.getLog(XmppConnectionImpl.class);
 
-	public XmppConnectionImpl(ManagedConnection managedConnection,
+	public XmppConnectionImpl(ResourceAdapter ra,
+			ManagedConnection managedConnection,
 			XmppConnectionRequestInfo connectionRequestInfo)
 			throws ResourceException {
 		LOG.info("Constructor");
+		this.workManager = ((ResourceAdapterImpl) ra).getWorkManager();
 		this.messageListeners = new HashSet<XmppMessageListener>();
-		this.connectionEventListeners = new HashSet<ConnectionEventListener>();
-		this.managedConnection = managedConnection;
-		this.connection = connect(connectionRequestInfo);		
+		this.connection = getConnection(connectionRequestInfo);
+		this.connectionRequestInfo = connectionRequestInfo;
+		this.connectionListener = new ConnectionListenerImpl(managedConnection);
+		this.messagePacketProcessor = new MessagePacketProcessor(
+				this.connectionRequestInfo);
+		this.presencePacketProcessor = new PresencePacketProcessor(
+				this.connection);
 	}
 
-	public boolean isValid() {
-		return this.connection.isConnected();
-	}
-	
 	private void acceptSubscriptionsManually(XMPPConnection conn)
 			throws ResourceException {
 		try {
@@ -96,6 +103,17 @@ public class XmppConnectionImpl implements XmppConnection, ConnectionListener {
 		}
 	}
 
+	public void setPresence(String type, String status)
+			throws ResourceException {
+		LOG.info("setPresence(String,String)");
+		try {
+			this.setPresence(this.connection, type, status);
+		} catch (Exception e) {
+			LOG.error("Could not setPresence.", e);
+			throw new ResourceException("Could not setPresence.", e);
+		}
+	}
+
 	private void sendMessage(String to, String message)
 			throws ResourceException {
 		LOG.info("sendMessage(String, String)");
@@ -106,7 +124,7 @@ public class XmppConnectionImpl implements XmppConnection, ConnectionListener {
 			Chat chat = chatManager.createChat(to, null);
 
 			// send the message
-			chat.sendMessage(message);			
+			chat.sendMessage(message);
 
 		} catch (Exception e) {
 			LOG.error("Could not sendMessage.", e);
@@ -114,7 +132,8 @@ public class XmppConnectionImpl implements XmppConnection, ConnectionListener {
 		}
 	}
 
-	private XMPPConnection connect(XmppConnectionRequestInfo connectionRequestInfo)
+	private XMPPConnection getConnection(
+			XmppConnectionRequestInfo connectionRequestInfo)
 			throws ResourceException {
 
 		try {
@@ -122,27 +141,37 @@ public class XmppConnectionImpl implements XmppConnection, ConnectionListener {
 					connectionRequestInfo.getHost(), connectionRequestInfo
 							.getPort().intValue(), connectionRequestInfo
 							.getDomain());
-			XMPPConnection conn = new XMPPConnection(config);
-			conn.connect();
-			
-			addMessagePacketListener(conn,
-					new MessagePacketProcessor(connectionRequestInfo),
-					connectionRequestInfo.getUsername());
-			addPresencePacketListener(conn,
-					new PresencePacketProcessor(), connectionRequestInfo
-							.getUsername());
-
-			login(conn, connectionRequestInfo.getUsername(),
-					connectionRequestInfo.getPassword());
-
-			setPresence(conn, PRESENCE_STATUS, PRESENCE_MESSAGE);
-			acceptSubscriptionsManually(conn);
-			
-			return conn;
+			return new XMPPConnection(config);
 
 		} catch (Exception e) {
-			LOG.error("Could not connect.", e);
+			LOG.error("Could not create connection.", e);
 			throw new ResourceException("Could not connect", e);
+		}
+	}
+
+	public void open() throws ResourceException {
+		try {
+			if (!this.connection.isConnected()) {
+				this.connection.connect();
+				this.connection.addConnectionListener(this.connectionListener);
+
+				addMessagePacketListener(this.connection,
+						this.messagePacketProcessor, connectionRequestInfo
+								.getUsername());
+
+				addPresencePacketListener(this.connection,
+						this.presencePacketProcessor,
+						this.connectionRequestInfo.getUsername());
+
+				login(this.connection,
+						this.connectionRequestInfo.getUsername(),
+						this.connectionRequestInfo.getPassword());
+
+				acceptSubscriptionsManually(this.connection);
+			}
+		} catch (Exception e) {
+			LOG.error("Could not open connection.", e);
+			throw new ResourceException("Could not open connection", e);
 		}
 	}
 
@@ -199,8 +228,14 @@ public class XmppConnectionImpl implements XmppConnection, ConnectionListener {
 	public void close() throws ResourceException {
 		try {
 			if (this.connection.isConnected()) {
-				this.connection.disconnect(new Presence(
-						Presence.Type.unavailable));				
+				this.connection
+						.removeConnectionListener(this.connectionListener);
+				this.connection
+						.removePacketListener(this.messagePacketProcessor);
+				this.connection
+						.removePacketListener(this.presencePacketProcessor);
+				this.connection.disconnect();
+				this.connectionListener.connectionClosed();
 			}
 		} catch (Exception e) {
 			LOG.error("Could not disconnect", e);
@@ -208,120 +243,26 @@ public class XmppConnectionImpl implements XmppConnection, ConnectionListener {
 		}
 	}
 
-	public void addMessageListener(XmppMessageListener listener)
+	public void addMessageListener(XmppMessageListener l)
 			throws ResourceException {
 		synchronized (messageListeners) {
-			messageListeners.add(listener);
+			messageListeners.add(l);
 		}
 	}
 
-	public void removeMessageListener(XmppMessageListener listener)
+	public void removeMessageListener(XmppMessageListener l)
 			throws ResourceException {
 		synchronized (messageListeners) {
-			messageListeners.remove(listener);
+			messageListeners.remove(l);
 		}
 	}
 
-	public void addConnectionEventListener(ConnectionEventListener listener)
-			throws ResourceException {
-		synchronized (connectionEventListeners) {
-			connectionEventListeners.add(listener);
-		}
+	public void addConnectionEventListener(ConnectionEventListener listener) {
+		this.connectionListener.addConnectionEventListener(listener);
 	}
 
-	public void removeConnectionEventListener(ConnectionEventListener listener)
-			throws ResourceException {
-		synchronized (connectionEventListeners) {
-			connectionEventListeners.remove(listener);
-		}
-	}
-
-	public void connectionClosed() {
-		LOG.debug("connectionClosed()");	
-		ConnectionEvent ce = new ConnectionEvent(this.managedConnection,
-				ConnectionEvent.CONNECTION_CLOSED);		
-		dispatchConnectionEvent(ce);			
-	}
-
-	public void connectionClosedOnError(Exception e) {
-		LOG.debug("connectionClosedOnError()");
-		ConnectionEvent ce = new ConnectionEvent(this.managedConnection,
-				ConnectionEvent.CONNECTION_ERROR_OCCURRED, e);
-		dispatchConnectionEvent(ce);	
-	}
-
-	public void reconnectingIn(int secs) {
-		LOG.debug("reconnectingIn(" + secs + " seconds)");
-	}
-
-	public void reconnectionFailed(Exception e) {
-		LOG.debug("reconnectionFailed()");
-		ConnectionEvent ce = new ConnectionEvent(this.managedConnection,
-				ConnectionEvent.CONNECTION_ERROR_OCCURRED, e);
-		dispatchConnectionEvent(ce);
-	}
-
-	public void reconnectionSuccessful() {
-		LOG.debug("reconnectionSuccessful()");
-	}
-
-	private void dispatchConnectionEvent(ConnectionEvent ce) {
-		for (ConnectionEventListener listener : connectionEventListeners) {
-			switch (ce.getId()) {
-			case ConnectionEvent.CONNECTION_CLOSED:
-				listener.connectionClosed(ce);
-				break;
-			case ConnectionEvent.LOCAL_TRANSACTION_STARTED:
-				listener.localTransactionStarted(ce);
-				break;
-			case ConnectionEvent.LOCAL_TRANSACTION_COMMITTED:
-				listener.localTransactionCommitted(ce);
-				break;
-			case ConnectionEvent.LOCAL_TRANSACTION_ROLLEDBACK:
-				listener.localTransactionRolledback(ce);
-				break;
-			case ConnectionEvent.CONNECTION_ERROR_OCCURRED:
-				listener.connectionErrorOccurred(ce);
-				break;
-			default:
-				throw new IllegalArgumentException("ILLEGAL_EVENT_TYPE"
-						+ ce.getId());
-			}
-		}
-	}
-
-	private void dispatchXmppMessage(XmppMessage xmppMessage) {
-		synchronized (messageListeners) {
-			for (XmppMessageListener listener : messageListeners) {
-				try {
-					listener.onMessage(xmppMessage);
-				} catch (Exception e) {
-					LOG.error("Could not dispatch message to listener", e);
-				}
-			}
-		}
-	}
-
-	private void addRosterEntry(String jid) {
-		try {
-			Roster roster = this.connection.getRoster();
-			roster.createEntry(jid, jid, null);
-			sendMessage(jid, "Welcome!");
-		} catch (Exception e) {
-			LOG.error("Could not create roster entry for " + jid, e);
-		}
-	}
-
-	private void removeRosterEntry(String jid) {
-		try {
-			Roster roster = this.connection.getRoster();
-			RosterEntry entry = roster.getEntry(jid);
-			if (entry != null) {
-				roster.removeEntry(entry);
-			}
-		} catch (Exception e) {
-			LOG.error("Could not remove roster entry for " + jid, e);
-		}
+	public void removeConnectionEventListener(ConnectionEventListener listener) {
+		this.connectionListener.removeConnectionEventListener(listener);
 	}
 
 	class MessagePacketProcessor implements PacketListener {
@@ -359,11 +300,55 @@ public class XmppConnectionImpl implements XmppConnection, ConnectionListener {
 				LOG.error("Could not process packet received", e);
 			}
 		}
+
+		private void dispatchXmppMessage(XmppMessage xmppMessage) {
+			try {
+				Worker worker = new Worker(xmppMessage);	
+				workManager.doWork(worker);
+			}
+			catch(Exception e) {
+				LOG.error("Could not schedule work", e);
+			}
+		}
+
+		class Worker implements Work {
+
+			private final XmppMessage xmppMessage;
+
+			public Worker(XmppMessage xmppMessage) {
+				this.xmppMessage = xmppMessage;
+			}
+
+			public void release() {
+
+			}
+
+			public void run() {
+				Set<XmppMessageListener> copy = new HashSet<XmppMessageListener>();
+				synchronized (messageListeners) {
+					copy.addAll(messageListeners);
+				}
+
+				for (XmppMessageListener listener : copy) {
+					try {
+						listener.onMessage(this.xmppMessage);
+					} catch (Exception e) {
+						LOG
+								.error(
+										"Could not dispatch message to XmppMessageListenerImpl",
+										e);
+					}
+				}
+			}
+		}
 	}
 
 	class PresencePacketProcessor implements PacketListener {
 
-		public PresencePacketProcessor() {
+		private final XMPPConnection connection;
+
+		public PresencePacketProcessor(XMPPConnection connection) {
+			this.connection = connection;
 		}
 
 		public void processPacket(Packet packet) {
@@ -380,6 +365,133 @@ public class XmppConnectionImpl implements XmppConnection, ConnectionListener {
 				}
 			} catch (Exception e) {
 				LOG.error("Could not process packet received", e);
+			}
+		}
+
+		private void addRosterEntry(String jid) {
+			try {
+				Roster roster = this.connection.getRoster();
+				roster.createEntry(jid, jid, null);
+				sendMessage(jid, "Welcome!");
+			} catch (Exception e) {
+				LOG.error("Could not create roster entry for " + jid, e);
+			}
+		}
+
+		private void removeRosterEntry(String jid) {
+			try {
+				Roster roster = this.connection.getRoster();
+				RosterEntry entry = roster.getEntry(jid);
+				if (entry != null) {
+					roster.removeEntry(entry);
+				}
+			} catch (Exception e) {
+				LOG.error("Could not remove roster entry for " + jid, e);
+			}
+		}
+	}
+
+	class ConnectionListenerImpl implements ConnectionListener {
+
+		private final ManagedConnection managedConnection;
+		private final Set<ConnectionEventListener> connectionEventListeners;
+
+		public ConnectionListenerImpl(ManagedConnection mc) {
+			this.managedConnection = mc;
+			this.connectionEventListeners = new HashSet<ConnectionEventListener>();
+		}
+
+		public void addConnectionEventListener(ConnectionEventListener listener) {
+			synchronized (this.connectionEventListeners) {
+				this.connectionEventListeners.add(listener);
+			}
+		}
+
+		public void removeConnectionEventListener(
+				ConnectionEventListener listener) {
+			synchronized (this.connectionEventListeners) {
+				this.connectionEventListeners.remove(listener);
+			}
+		}
+
+		public void connectionClosed() {
+			LOG.debug("connectionClosed()");
+			dispatchConnectionEvent(new ConnectionEvent(this.managedConnection,
+					ConnectionEvent.CONNECTION_CLOSED));
+		}
+
+		public void connectionClosedOnError(Exception e) {
+			LOG.debug("connectionClosedOnError()");
+			dispatchConnectionEvent(new ConnectionEvent(this.managedConnection,
+					ConnectionEvent.CONNECTION_ERROR_OCCURRED, e));
+		}
+
+		public void reconnectingIn(int secs) {
+			LOG.debug("reconnectingIn(" + secs + " seconds)");
+		}
+
+		public void reconnectionFailed(Exception e) {
+			LOG.debug("reconnectionFailed()");
+			dispatchConnectionEvent(new ConnectionEvent(this.managedConnection,
+					ConnectionEvent.CONNECTION_ERROR_OCCURRED, e));
+		}
+
+		public void reconnectionSuccessful() {
+			LOG.debug("reconnectionSuccessful()");
+		}
+
+		private void dispatchConnectionEvent(ConnectionEvent ce) {
+			try {
+				Worker worker = new Worker(this, ce);
+				workManager.scheduleWork(worker);
+			} catch (Exception e) {
+				LOG.error("Could not schedule work", e);
+			}
+		}
+
+		class Worker implements Work {
+
+			private final ConnectionListenerImpl connectionListenerImpl;
+			private final ConnectionEvent connectionEvent;
+
+			public Worker(ConnectionListenerImpl connectionListenerImpl,
+					ConnectionEvent connectionEvent) {
+				this.connectionListenerImpl = connectionListenerImpl;
+				this.connectionEvent = connectionEvent;
+			}
+
+			public void release() {
+
+			}
+
+			public void run() {
+				Set<ConnectionEventListener> listeners = new HashSet<ConnectionEventListener>();
+				synchronized (this.connectionListenerImpl.connectionEventListeners) {
+					listeners
+							.addAll(this.connectionListenerImpl.connectionEventListeners);
+				}
+				for (ConnectionEventListener listener : listeners) {
+					switch (connectionEvent.getId()) {
+					case ConnectionEvent.CONNECTION_CLOSED:
+						listener.connectionClosed(connectionEvent);
+						break;
+					case ConnectionEvent.LOCAL_TRANSACTION_STARTED:
+						listener.localTransactionStarted(connectionEvent);
+						break;
+					case ConnectionEvent.LOCAL_TRANSACTION_COMMITTED:
+						listener.localTransactionCommitted(connectionEvent);
+						break;
+					case ConnectionEvent.LOCAL_TRANSACTION_ROLLEDBACK:
+						listener.localTransactionRolledback(connectionEvent);
+						break;
+					case ConnectionEvent.CONNECTION_ERROR_OCCURRED:
+						listener.connectionErrorOccurred(connectionEvent);
+						break;
+					default:
+						throw new IllegalArgumentException("ILLEGAL_EVENT_TYPE"
+								+ connectionEvent.getId());
+					}
+				}
 			}
 		}
 	}
